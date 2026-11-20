@@ -39,7 +39,7 @@ export default function Ask() {
   const [busy, setBusy] = useState(false);
   const [hot, setHot] = useState<string>();
   const end = useRef<HTMLDivElement>(null);
-  useEffect(() => end.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }), [turns.length, busy]);
+  useEffect(() => { end.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, [turns.length, busy]);
 
   const ask = async (question: string) => {
     if (!question.trim() || busy) return;

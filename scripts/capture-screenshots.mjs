@@ -11,28 +11,31 @@ const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, dev
 async function shot(name, path, prep) {
   await page.goto(`${BASE}${path}`);
   await page.waitForLoadState('networkidle');
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(1400);
   if (prep) await prep();
   await page.screenshot({ path: `docs/images/${name}.png` });
   console.log('captured', name);
 }
 
-await shot('01-change-inbox', '/');
-await shot('02-notice-deadline', '/notice/?id=RCN-2026-004', async () => {
-  await page.getByRole('button', { name: 'Re-assess' }).click();
-  await page.waitForSelector('text=Fresh assessment', { timeout: 20000 });
-});
+await shot('01-change-inbox', '/?id=RCN-2026-004');
+await shot('02-notice-deadline', '/notice/?id=RCN-2026-004');
 await shot('03-obligation-map-gaps', '/map/', async () => {
-  await page.getByLabel('Filter obligations').selectOption('gaps');
+  await page.getByRole('button', { name: 'Gaps', exact: true }).click();
   await page.waitForTimeout(400);
+  await page.locator('tbody tr').first().click();
+  await page.waitForTimeout(600);
 });
-await shot('04-gap-tracker', '/gaps/?id=GAP-0202');
+await shot('04-gap-tracker', '/gaps/');
 await shot('05-ask-rulebook', '/ask/', async () => {
   await page.getByRole('button', { name: 'How long must we keep complaint records, and do our policies agree?' }).click();
-  await page.waitForSelector('text=Sample AI response', { timeout: 30000 });
+  await page.waitForSelector('text=sources · hover', { timeout: 30000 });
   await page.waitForTimeout(500);
 });
-await shot('06-not-applicable', '/notice/?id=RCN-2026-016');
+await shot('06-not-applicable', '/?id=RCN-2026-016', async () => {
+  await page.getByRole('button', { name: 'Re-assess', exact: true }).first().click();
+  await page.waitForSelector('text=fresh assessment', { timeout: 20000 });
+  await page.waitForTimeout(2500);
+});
 await browser.close();
 
 // Catalog cards: 960x600 JPEG, dashboard first.

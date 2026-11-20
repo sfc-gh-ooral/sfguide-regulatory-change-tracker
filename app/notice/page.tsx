@@ -14,7 +14,7 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 export default function NoticePage() {
   const [id, setId] = useState<string>();
   const [reload, setReload] = useState(0);
-  useEffect(() => setId(new URLSearchParams(window.location.search).get('id') ?? 'RCN-2026-004'), []);
+  useEffect(() => { setId(new URLSearchParams(window.location.search).get('id') ?? 'RCN-2026-004'); }, []);
   const file = useAsync(() => (id ? data.notice(id) : new Promise<null>(() => {})), [id, reload], true);
 
   if (file.error) return <ErrorState error={file.error} />;

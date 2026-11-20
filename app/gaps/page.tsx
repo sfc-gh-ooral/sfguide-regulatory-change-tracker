@@ -87,7 +87,7 @@ export default function GapTracker() {
   const g = useAsync(() => data.gaps(), [reload], true);
   const [view, setView] = useState<'board' | 'table'>('board');
   const [openId, setOpenId] = useState<string | null>(null);
-  useEffect(() => setOpenId(new URLSearchParams(window.location.search).get('id')), []);
+  useEffect(() => { setOpenId(new URLSearchParams(window.location.search).get('id')); }, []);
   const gaps = useMemo(() => g.data?.gaps ?? [], [g.data]);
 
   if (g.error) return <ErrorState error={g.error} />;

@@ -117,9 +117,9 @@ export function NoticePane({ file, onChanged, full = false }: { file: NoticeDeta
                 <div className="flex items-center gap-2 flex-wrap"><span className="id font-semibold">§{o.ref}</span><VerdictPill verdict={o.verdict} />{o.gapType && <GapPill type={o.gapType} />}</div>
                 <p className="font-serif text-[14.5px] leading-snug mt-1.5">{o.text}</p>
                 {o.policyId && (
-                  <div className="mt-2 grid gap-1 text-[12px] text-ink-2">
-                    <div className="flex items-center gap-2 flex-wrap"><span className="id text-ink">{o.policyId}</span><span className="truncate">{o.policyTitle}</span><span className="ml-auto"><Score value={o.policyScore} /></span></div>
-                    <div className="flex items-center gap-2 flex-wrap"><span className="id text-ink">{o.controlId}</span><span className="truncate max-w-[60%]">{o.controlDesc}</span><span className="ml-auto"><Score value={o.controlScore} /></span></div>
+                  <div className="mt-2 grid gap-1 text-[12px] text-ink-2 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0"><span className="id text-ink shrink-0">{o.policyId}</span><span className="truncate min-w-0 flex-1">{o.policyTitle}</span><span className="ml-auto shrink-0"><Score value={o.policyScore} /></span></div>
+                    <div className="flex items-center gap-2 min-w-0"><span className="id text-ink shrink-0">{o.controlId}</span><span className="truncate min-w-0 flex-1">{o.controlDesc}</span><span className="ml-auto shrink-0"><Score value={o.controlScore} /></span></div>
                   </div>
                 )}
                 {o.verdict !== 'Meets' && o.reason && <p className="text-[12.5px] mt-2 text-ink-2"><strong className="text-ink">Verdict:</strong> {o.reason}</p>}
