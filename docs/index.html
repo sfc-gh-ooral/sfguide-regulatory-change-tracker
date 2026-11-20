@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regulatory Change Tracker: a Snowflake example</title>
+<meta name="description" content="Read new rules and guidance, map obligations to policies and controls, and track gaps to closure. Synthetic data and fictional regulators.">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#f6f7fb, #0d1220);
+  --card: light-dark(#ffffff, #141b2d);
+  --card-2: light-dark(#f0f2f8, #1b2439);
+  --border: light-dark(#dde1ec, #2a3550);
+  --text: light-dark(#141a2e, #e8ecf6);
+  --text-2: light-dark(#4a5373, #aab3cc);
+  --muted: light-dark(#6b7493, #8590ad);
+  --accent: light-dark(#1a6fd1, #5aa7f5);
+  --accent-soft: light-dark(rgba(26,111,209,.1), rgba(90,167,245,.14));
+  --warn-soft: light-dark(#fff6e6, #2b2414);
+  --warn-border: light-dark(#f0c36d, #6b5420);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); }
+img, svg { max-width: 100%; height: auto; }
+.wrap { max-width: 1080px; width: 100%; margin: 0 auto; padding: 0 clamp(16px, 4vw, 28px); }
+header.top { border-bottom: 1px solid var(--border); background: var(--card); }
+header.top .wrap { display: flex; align-items: center; gap: 12px; padding-top: 14px; padding-bottom: 14px; flex-wrap: wrap; }
+.mark { width: 30px; height: 30px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; }
+.brand { font-weight: 650; }
+.brand small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; }
+nav.links { margin-left: auto; display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; }
+nav.links a { text-decoration: none; color: var(--text-2); }
+nav.links a:hover { color: var(--accent); }
+.hero { padding-top: clamp(36px, 7vw, 72px); padding-bottom: 28px; }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.15; margin: 10px 0 16px; letter-spacing: -.01em; }
+.lede { font-size: clamp(17px, 2.2vw, 19px); color: var(--text-2); max-width: 760px; margin: 0 0 24px; }
+.cta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 26px; }
+.btn { display: inline-block; padding: 10px 16px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--text); text-decoration: none; font-weight: 600; font-size: 15px; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.fact { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 14px; }
+.fact b { display: block; font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.note { background: var(--warn-soft); border: 1px solid var(--warn-border); border-radius: 10px; padding: 12px 16px; font-size: 14px; margin: 22px 0 0; }
+section { padding: 44px 0; border-top: 1px solid var(--border); }
+h2 { font-size: clamp(24px, 3.4vw, 30px); margin: 0 0 10px; }
+h3 { font-size: 18px; margin: 0 0 6px; }
+.sub { color: var(--text-2); max-width: 760px; margin: 0 0 24px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+.card p { margin: 0; color: var(--text-2); font-size: 15px; }
+figure { margin: 0 0 34px; }
+figure img { display: block; width: 100%; border: 1px solid var(--border); border-radius: 12px; background: var(--card); }
+figcaption { margin-top: 10px; font-size: 15px; color: var(--text-2); }
+figcaption .cap { display: inline-block; font-size: 12px; font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 1px 9px; margin-right: 6px; }
+.step { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; align-items: start; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { background: var(--card-2); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+code, pre { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; }
+code { background: var(--card-2); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--card-2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; overflow-x: auto; margin: 0 0 14px; }
+pre code { background: none; padding: 0; }
+ul { padding-left: 20px; }
+li { margin: 4px 0; }
+footer { border-top: 1px solid var(--border); padding: 28px 0 44px; color: var(--muted); font-size: 14px; }
+@media (max-width: 560px) { nav.links { margin-left: 0; width: 100%; gap: 12px; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="mark" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15l2 2 4-4"/></svg>
+    </div>
+    <div class="brand">Regulatory Change Tracker<small>A Snowflake example on synthetic data</small></div>
+    <nav class="links" aria-label="Page sections">
+      <a href="#walkthrough">Walkthrough</a><a href="#how-it-works">How it works</a><a href="#get-started">Get started</a><a href="#limits">Limits</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap hero" id="problem">
+  <div class="eyebrow">Financial Services · Compliance</div>
+  <h1>Turn every new rule into owned, dated work before it takes effect</h1>
+  <p class="lede">Regulators publish rules, guidance and consultations every week. A compliance team has to read each one, decide whether it applies, find the obligations, check them against the firm's policies and controls, and chase the gaps to closure before the effective date. This example reads each notice as it lands, says whether it applies to a fictional bank and why, extracts its obligations, matches them to the closest policies and controls, flags what is not met, and puts each gap in a tracker with an owner and a due date. Analysts confirm or override every AI suggestion, with a reason.</p>
+  <div class="cta">
+    <a class="btn primary" href="try/">Try the example in your browser</a>
+    <a class="btn" href="https://github.com/sfc-gh-ooral/sfguide-regulatory-change-tracker">View the repository</a>
+  </div>
+  <div class="facts">
+    <div class="fact"><b>No-account mode</b>Runs in the browser on synthetic data; nothing to install</div>
+    <div class="fact"><b>Live mode</b>Any edition; Cortex AI functions, Cortex Search and Cortex Agents</div>
+    <div class="fact"><b>Setup</b>One Snowsight worksheet; about 2 minutes in our test runs</div>
+    <div class="fact"><b>Measured cost</b>0.41 warehouse credits for three setup runs and testing; each run makes 48 document AI calls and about 70 AI_COMPLETE calls</div>
+  </div>
+  <p class="note"><strong>Synthetic data, illustrative logic.</strong> The bank, the regulators, the rules, the policies and every person are fictional and were written for this example. This is not legal, regulatory or compliance advice, and it isn't a production system. AI assessments and mappings are suggestions for a compliance analyst to review.</p>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Who it is for</h2>
+    <div class="grid3">
+      <div class="card"><h3>Regulatory change analysts</h3><p>An inbox of new publications with an AI applicability assessment and plain-language summary, and a one-click decision with a reason for the audit trail.</p></div>
+      <div class="card"><h3>Policy and control owners</h3><p>Each obligation next to the policy sentence and control that best match it, with similarity scores and a coverage verdict that quotes the decisive wording.</p></div>
+      <div class="card"><h3>Compliance leaders</h3><p>A gap tracker with owners, due dates set from the effective date, status and evidence links, and a rulebook you can question in plain language.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="walkthrough">
+  <div class="wrap">
+    <h2>Walkthrough</h2>
+    <p class="sub">Screenshots of the app in no-account mode. Its data and AI text were captured from the live app on the same synthetic notices. The findings below are planted stories on this synthetic data set.</p>
+    <figure>
+      <img src="images/01-change-inbox.png" alt="Change inbox with KPIs for notices received, awaiting review, obligations extracted and open gaps, a chart of notices by regulator, and a list of publications with AI applicability badges" loading="lazy" width="1440" height="900">
+      <figcaption><span class="cap">Stage, stream and task · AI_COMPLETE</span>The change inbox. Each PDF that lands on the stage is picked up by a stream and task, parsed with AI_PARSE_DOCUMENT and assessed for applicability with AI_COMPLETE structured output.</figcaption>
+    </figure>
+    <figure>
+      <img src="images/02-notice-deadline.png" alt="Notice RCN-2026-004 with a fresh AI applicability assessment labeled Sample AI response, a decision panel, and three obligations, one flagged Requirement not met" loading="lazy" width="1440" height="900">
+      <figcaption><span class="cap">AI_EXTRACT · AI_EMBED · AI_COMPLETE</span>A new rule shortens the complaint final-response deadline to 15 business days. AI_EXTRACT pulls the three numbered obligations; the coverage check finds the complaint procedure still allows 30 calendar days.</figcaption>
+    </figure>
+    <figure>
+      <img src="images/03-obligation-map-gaps.png" alt="Obligation map filtered to gaps, showing each obligation with its two closest policies and closest control, similarity bars and coverage verdicts" loading="lazy" width="1440" height="900">
+      <figcaption><span class="cap">AI_EMBED similarity · AI_COMPLETE</span>The obligation map, filtered to gaps. One complaint-records obligation sits on two policies that conflict (7-year retention against 5-year deletion), and two third-party AI model obligations have no matching control.</figcaption>
+    </figure>
+    <figure>
+      <img src="images/04-gap-tracker.png" alt="Gap tracker with KPIs and a list of gaps showing type, status, owner, due date and evidence" loading="lazy" width="1440" height="900">
+      <figcaption><span class="cap">Snowflake tables and app write-back</span>The gap tracker. Gaps get the owner of the closest policy and a due date 30 days before the rule takes effect; owners update status and attach evidence, and every change is written back to Snowflake.</figcaption>
+    </figure>
+    <figure>
+      <img src="images/05-ask-rulebook.png" alt="Ask the rulebook answering how long complaint records must be kept, citing the notice, the complaint procedure, the records retention standard and a control" loading="lazy" width="1440" height="900">
+      <figcaption><span class="cap">Cortex Agents · Cortex Search</span>Ask the rulebook. A Cortex Agent searches the notices, policies and controls with Cortex Search and answers with a citation after every claim.</figcaption>
+    </figure>
+    <figure>
+      <img src="images/06-not-applicable.png" alt="Annuity suitability notice auto-dismissed by AI with the reason that the bank does not sell insurance or annuities; its obligations are not assessed" loading="lazy" width="1440" height="900">
+      <figcaption><span class="cap">AI_COMPLETE structured output</span>A notice for insurers selling annuities. AI_COMPLETE dismisses it with a reason, because the fictional bank sells no insurance; an analyst confirms or overrides the dismissal.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="how-it-works">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="sub">Each capability below ran in live mode on a Snowflake account in AWS US East 1 in November 2026.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Step</th><th>Snowflake capability</th><th>What it does here</th></tr></thead>
+        <tbody>
+          <tr><td>Intake</td><td>Stage with directory table, stream, task</td><td>New notice PDFs on the stage are queued by a stream; a task runs the pipeline procedure when the stream has data.</td></tr>
+          <tr><td>Read</td><td>AI_PARSE_DOCUMENT (OCR mode)</td><td>Full text of each notice, for search and the AI assessment.</td></tr>
+          <tr><td>Extract</td><td>AI_EXTRACT</td><td>Notice number, regulator, type, dates and the numbered requirements as a table, one obligation per row.</td></tr>
+          <tr><td>Assess</td><td>AI_COMPLETE with structured output</td><td>Applies or not, why, products affected and a two-sentence summary, against a firm profile.</td></tr>
+          <tr><td>Map</td><td>AI_EMBED and VECTOR_COSINE_SIMILARITY</td><td>Matches each obligation to the closest policy sentences and controls.</td></tr>
+          <tr><td>Check</td><td>AI_COMPLETE with structured output</td><td>Coverage verdict for the two closest policies and controls, and a conflict check when two policies both match closely.</td></tr>
+          <tr><td>Track</td><td>Tables, app write-back</td><td>Gaps with owner, due date, status and evidence; analyst decisions and gap updates are inserted from the app.</td></tr>
+          <tr><td>Ask</td><td>Cortex Search, Cortex Agents</td><td>A search service over notice chunks, policies and controls, used by an agent that cites its sources.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="get-started">
+  <div class="wrap">
+    <h2>Get started</h2>
+    <div class="two">
+      <div>
+        <h3>No-account mode</h3>
+        <p class="sub" style="margin-bottom:12px">Open the <a href="try/">hosted example</a>, or run it locally with Node.js 20.19 or later:</p>
+        <pre><code>git clone https://github.com/sfc-gh-ooral/sfguide-regulatory-change-tracker.git
+cd sfguide-regulatory-change-tracker
+npm install &amp;&amp; npm run dev</code></pre>
+        <p class="sub">AI answers in this mode are captured from the live app and labeled <strong>Sample AI response</strong>.</p>
+      </div>
+      <div>
+        <h3>Live mode</h3>
+        <ol class="sub">
+          <li>Run <code>sql/setup.sql</code> in a Snowsight worksheet as ACCOUNTADMIN.</li>
+          <li>Register a key pair on your user and copy <code>.env.example</code> to <code>.env.local</code>.</li>
+          <li>Run <code>npm run dev</code> and switch the header to Live.</li>
+          <li>Run <code>sql/cleanup.sql</code> when you are done.</li>
+        </ol>
+        <p class="sub">Cortex AI functions, Cortex Search and Cortex Agents must be available in your region or through cross-region inference. The README lists every object created, the cost, and the full steps.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="limits">
+  <div class="wrap">
+    <h2>Known limits</h2>
+    <ul class="sub">
+      <li>Mapping and coverage verdicts are AI suggestions. On this synthetic set they found the four planted gaps and no others in our runs, but wording can change between runs, so an analyst must review every verdict.</li>
+      <li>Overriding an AI dismissal records the decision but does not re-run coverage checks for that notice's obligations.</li>
+      <li>Each obligation is checked against its two closest policies and two closest controls only.</li>
+      <li>The policy library is a table of short synthetic policies; real libraries need chunking and a review of low-similarity matches.</li>
+      <li>Evidence links are example URLs; the app stores the link and does not fetch it.</li>
+    </ul>
+    <p class="note">This is an illustrative example provided as is. It is not an official Snowflake product, it isn't supported by Snowflake Support, and it contains no customer data. Apache 2.0 license.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Owner: Oz Oral · Last reviewed: November 2026 · <a href="https://github.com/sfc-gh-ooral/sfguide-regulatory-change-tracker">Repository</a> · <a href="https://docs.snowflake.com/en/user-guide/snowflake-cortex/aisql">Cortex AI functions</a> · <a href="https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents">Cortex Agents</a></div>
+</footer>
+
+</body>
+</html>

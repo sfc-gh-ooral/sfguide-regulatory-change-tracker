@@ -419,7 +419,10 @@ def render(n, folder):
     cv.save()
 
 
+PUBLIC_DIR = ROOT / "public/notices"  # copies the app links to, so the PDF opens in Sample mode too
+PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
 for n in N:
     render(n, INCOMING_DIR if n[9] == "incoming" else NOTICE_DIR)
+    render(n, PUBLIC_DIR)
 
 print(f"{len(N)} notices, {len(P)} policies, {len(C)} controls, {len(prior)} prior gaps")

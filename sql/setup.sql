@@ -194,7 +194,7 @@ BEGIN
          parsed:content::STRING, parsed:metadata:pageCount::NUMBER,
          x:regulator::STRING, x:notice_type::STRING, x:title::STRING,
          TRY_TO_DATE(x:published_date::STRING), TRY_TO_DATE(x:effective_date::STRING), x, SYSDATE(),
-         IFF(SYSTEM$CURRENT_USER_TASK_NAME() IS NULL, 'Setup', 'PROCESS_NOTICES_TASK')
+         IFF(NULLIF(SYSTEM$CURRENT_USER_TASK_NAME(), '') IS NULL, 'Setup', 'PROCESS_NOTICES_TASK')
   FROM a;
   UPDATE NOTICE_QUEUE SET processed = TRUE WHERE relative_path IN (SELECT file_name FROM NOTICES);
 
@@ -373,7 +373,7 @@ tools:
 tool_resources:
   rulebook_search:
     search_service: REG_CHANGE_DEMO.RCT.RULEBOOK_SEARCH
-    max_results: 6
+    max_results: 8
     title_column: source_name
     id_column: source_id
 $$;
