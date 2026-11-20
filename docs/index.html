@@ -141,7 +141,7 @@ footer { border-top: 1px solid var(--rule); padding: 28px 0 44px; color: var(--m
     </figure>
     <figure>
       <img src="images/03-obligation-map-gaps.png" alt="Obligation map filtered to gaps, with KPI tiles, a similarity score histogram, a coverage verdict donut, and a details drawer showing candidate policies, the closest control and the AI verdict" loading="lazy" width="1440" height="900">
-      <figcaption><span class="cap">AI_EMBED similarity · AI_COMPLETE</span>The obligation map, filtered to gaps, with one obligation open in the details drawer. One complaint-records obligation sits on two policies that conflict (7-year retention against 5-year deletion), and two third-party AI model obligations have no matching control.</figcaption>
+      <figcaption><span class="cap">AI_EMBED · VECTOR_COSINE_SIMILARITY · AI_COMPLETE</span>The obligation map, filtered to gaps, with one obligation open in the details drawer. One complaint-records obligation sits on two policies that conflict (7-year retention against 5-year deletion), and two third-party AI model obligations have no matching control.</figcaption>
     </figure>
     <figure>
       <img src="images/04-gap-tracker.png" alt="Gap tracker with KPI tiles, a gaps-by-owner-team chart, and a board with Open, In progress, Ready for review and Closed columns of gap cards showing owner and due date" loading="lazy" width="1440" height="900">
@@ -167,10 +167,10 @@ footer { border-top: 1px solid var(--rule); padding: 28px 0 44px; color: var(--m
         <thead><tr><th>Step</th><th>Snowflake capability</th><th>What it does here</th></tr></thead>
         <tbody>
           <tr><td>Intake</td><td>Stage with directory table, stream, task</td><td>New notice PDFs on the stage are queued by a stream; a task runs the pipeline procedure when the stream has data.</td></tr>
-          <tr><td>Read</td><td>AI_PARSE_DOCUMENT (OCR mode)</td><td>Full text of each notice, for search and the AI assessment.</td></tr>
+          <tr><td>Read</td><td>AI_PARSE_DOCUMENT (OCR mode)</td><td>Full text of each notice, for search and the AI assessment. Runs in the pipeline, and again on demand from Extract again.</td></tr>
           <tr><td>Extract</td><td>AI_EXTRACT</td><td>Notice number, regulator, type, dates and the numbered requirements as a table, one obligation per row.</td></tr>
           <tr><td>Assess</td><td>AI_COMPLETE with structured output</td><td>Applies or not, why, products affected and a two-sentence summary, against a firm profile.</td></tr>
-          <tr><td>Map</td><td>AI_EMBED and VECTOR_COSINE_SIMILARITY</td><td>Matches each obligation to the closest policy sentences and controls.</td></tr>
+          <tr><td>Map</td><td>AI_EMBED and VECTOR_COSINE_SIMILARITY</td><td>Matches each obligation to the closest policy sentences and controls. Runs in the pipeline, and again on demand from Re-map this obligation.</td></tr>
           <tr><td>Check</td><td>AI_COMPLETE with structured output</td><td>Coverage verdict for the two closest policies and controls, and a conflict check when two policies both match closely.</td></tr>
           <tr><td>Track</td><td>Tables, app write-back</td><td>Gaps with owner, due date, status and evidence; analyst decisions and gap updates are inserted from the app.</td></tr>
           <tr><td>Ask</td><td>Cortex Search, Cortex Agents</td><td>A search service over notice chunks, policies and controls, used by an agent that cites its sources.</td></tr>

@@ -1,6 +1,6 @@
 'use client';
 
-// Obligation map: every extracted obligation, its closest policy and control (AI_SIMILARITY over
+// Obligation map: every extracted obligation, its closest policy and control (VECTOR_COSINE_SIMILARITY over
 // AI_EMBED vectors), and the AI_COMPLETE coverage verdict. Gaps and low-confidence matches stand out.
 import { ArrowDownUp, ArrowUpRight, Search } from 'lucide-react';
 import Link from 'next/link';
@@ -60,7 +60,7 @@ export default function ObligationMap() {
           <h1 className="font-serif text-[28px] font-semibold tracking-tight leading-tight">Obligation map</h1>
           <p className="text-ink-2 text-[13.5px] mt-0.5">Each obligation is matched to its closest policy sentence and control, then judged against them. Scores under {LOW} need a human look.</p>
         </div>
-        <div className="flex gap-1.5 flex-wrap"><PoweredBy>AI_EMBED</PoweredBy><PoweredBy>AI_SIMILARITY</PoweredBy><PoweredBy>AI_COMPLETE</PoweredBy><SourceBadge p={m.data.provenance} /></div>
+        <div className="flex gap-1.5 flex-wrap"><PoweredBy>AI_EMBED</PoweredBy><PoweredBy>VECTOR_COSINE_SIMILARITY</PoweredBy><PoweredBy>AI_COMPLETE</PoweredBy><SourceBadge p={m.data.provenance} /></div>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -140,7 +140,7 @@ export default function ObligationMap() {
           {open.policyId ? (
             <>
               <div className="panel p-3.5 space-y-3">
-                <div className="eyebrow">Candidate policies (AI_SIMILARITY)</div>
+                <div className="eyebrow">Candidate policies (VECTOR_COSINE_SIMILARITY)</div>
                 {[[open.policyId, open.policyTitle, open.policyScore], [open.policy2Id, open.policy2Title, open.policy2Score]].filter(([id]) => id).map(([id, t, s], i) => (
                   <div key={String(id)} className="flex items-center gap-2"><span className="id font-semibold">{id}</span><span className="text-[12.5px] truncate">{t}</span><span className="ml-auto"><Score value={Number(s)} /></span>{i === 0 && <Pill tone="ink">top</Pill>}</div>
                 ))}

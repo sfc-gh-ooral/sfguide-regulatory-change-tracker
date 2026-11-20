@@ -1,0 +1,1412 @@
+{
+ "RCN-2026-001-3.1": {
+  "obligationId": "RCN-2026-001-3.1",
+  "policies": [
+   {
+    "id": "POL-FEE-01",
+    "title": "Fees and Charges Disclosure Policy",
+    "score": 0.86
+   },
+   {
+    "id": "POL-FRD-01",
+    "title": "Payment Fraud Prevention Policy",
+    "score": 0.422
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-121",
+    "desc": "App release test confirms the overdraft fee prompt and cancel option appear before a fee-bearing transaction",
+    "score": 0.775
+   },
+   {
+    "id": "CTL-122",
+    "desc": "Monthly reconciliation that every account charged a fee received a fee summary with a year-to-date total",
+    "score": 0.406
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-FEE-01 states \"Before an overdraft fee is charged on a card or app transaction, the app shows the fee and lets the customer cancel\" which exactly matches the obligation's requirement to show the fee amount and give a choice to cancel, and Control CTL-121 confirms this by testing that \"the overdraft fee prompt and cancel option appear before a fee-bearing transaction\"."
+ },
+ "RCN-2026-001-3.2": {
+  "obligationId": "RCN-2026-001-3.2",
+  "policies": [
+   {
+    "id": "POL-FEE-01",
+    "title": "Fees and Charges Disclosure Policy",
+    "score": 0.615
+   },
+   {
+    "id": "POL-CRD-01",
+    "title": "Credit Card Statement Standard",
+    "score": 0.428
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-122",
+    "desc": "Monthly reconciliation that every account charged a fee received a fee summary with a year-to-date total",
+    "score": 0.647
+   },
+   {
+    "id": "CTL-162",
+    "desc": "Monthly report of high-risk business customers whose beneficial ownership refresh is overdue",
+    "score": 0.485
+   }
+  ],
+  "verdict": "Partially meets",
+  "controlCovers": true,
+  "reason": "Policy POL-FEE-01 requires \"a monthly statement of all fees charged\" but does not specify that it covers overdraft and returned-item fees specifically, while the obligation requires \"a monthly summary of all overdraft and returned-item fees charged.\""
+ },
+ "RCN-2026-002-3.1": {
+  "obligationId": "RCN-2026-002-3.1",
+  "policies": [
+   {
+    "id": "POL-PRV-01",
+    "title": "Privacy and Data Subject Rights Procedure",
+    "score": 0.704
+   },
+   {
+    "id": "POL-PRV-02",
+    "title": "Personal Data Breach Response Procedure",
+    "score": 0.598
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-131",
+    "desc": "Weekly report of data access requests open for more than 20 days, with escalation before the 30-day limit",
+    "score": 0.618
+   },
+   {
+    "id": "CTL-201",
+    "desc": "Daily arrears report confirms contact attempts within 10 days of a missed payment",
+    "score": 0.465
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-PRV-01 states \"Requests are answered within 30 calendar days\" which exactly matches the obligation's 30 calendar day deadline, and Control CTL-131 provides weekly monitoring with escalation before the 30-day limit to detect potential breaches."
+ },
+ "RCN-2026-002-3.2": {
+  "obligationId": "RCN-2026-002-3.2",
+  "policies": [
+   {
+    "id": "POL-PRV-01",
+    "title": "Privacy and Data Subject Rights Procedure",
+    "score": 0.584
+   },
+   {
+    "id": "POL-REC-01",
+    "title": "Records Retention Standard",
+    "score": 0.445
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-131",
+    "desc": "Weekly report of data access requests open for more than 20 days, with escalation before the 30-day limit",
+    "score": 0.536
+   },
+   {
+    "id": "CTL-112",
+    "desc": "Regulatory request log reviewed weekly for requests approaching their response deadline",
+    "score": 0.527
+   }
+  ],
+  "verdict": "Partially meets",
+  "controlCovers": true,
+  "reason": "Policy POL-PRV-01 logs data access requests from customers with the required details, but the obligation requires logging \"every data access request\" without limiting scope to customer requests only."
+ },
+ "RCN-2026-003-3.1": {
+  "obligationId": "RCN-2026-003-3.1",
+  "policies": [
+   {
+    "id": "POL-RES-01",
+    "title": "Operational Resilience Policy",
+    "score": 0.623
+   },
+   {
+    "id": "POL-TPR-01",
+    "title": "Third-Party Risk Management Policy",
+    "score": 0.427
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-141",
+    "desc": "Annual Board approval of important business services and impact tolerances, recorded in Board minutes",
+    "score": 0.553
+   },
+   {
+    "id": "CTL-142",
+    "desc": "Annual severe-but-plausible scenario test for each important business service, with results tracked",
+    "score": 0.48
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-RES-01 explicitly states \"The bank maintains a list of important business services, each with an impact tolerance for maximum tolerable disruption,\" which directly fulfills both requirements of the obligation."
+ },
+ "RCN-2026-003-3.2": {
+  "obligationId": "RCN-2026-003-3.2",
+  "policies": [
+   {
+    "id": "POL-RES-01",
+    "title": "Operational Resilience Policy",
+    "score": 0.59
+   },
+   {
+    "id": "POL-TPR-01",
+    "title": "Third-Party Risk Management Policy",
+    "score": 0.467
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-142",
+    "desc": "Annual severe-but-plausible scenario test for each important business service, with results tracked",
+    "score": 0.605
+   },
+   {
+    "id": "CTL-153",
+    "desc": "Exit plan test for each critical supplier, every two years",
+    "score": 0.495
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-RES-01 states \"Each service is tested against severe but plausible scenarios at least once a year\" and Control CTL-142 implements \"Annual severe-but-plausible scenario test for each important business service,\" which exactly matches the obligation's requirement to test ability to remain within impact tolerance through severe but plausible scenario exercises at least once a year."
+ },
+ "RCN-2026-003-3.3": {
+  "obligationId": "RCN-2026-003-3.3",
+  "policies": [
+   {
+    "id": "POL-RES-01",
+    "title": "Operational Resilience Policy",
+    "score": 0.644
+   },
+   {
+    "id": "POL-TPR-01",
+    "title": "Third-Party Risk Management Policy",
+    "score": 0.423
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-141",
+    "desc": "Annual Board approval of important business services and impact tolerances, recorded in Board minutes",
+    "score": 0.811
+   },
+   {
+    "id": "CTL-142",
+    "desc": "Annual severe-but-plausible scenario test for each important business service, with results tracked",
+    "score": 0.502
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-RES-01 states \"The Board approves the list and tolerances annually\" and Control CTL-141 provides \"Annual Board approval of important business services and impact tolerances, recorded in Board minutes,\" which exactly matches the obligation's requirement for annual board approval of the list and impact tolerances."
+ },
+ "RCN-2026-004-3.1": {
+  "obligationId": "RCN-2026-004-3.1",
+  "policies": [
+   {
+    "id": "POL-CMP-01",
+    "title": "Complaint Handling Procedure",
+    "score": 0.777
+   },
+   {
+    "id": "POL-FRD-02",
+    "title": "Scam Reimbursement Procedure",
+    "score": 0.504
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-101",
+    "desc": "Daily report of complaints not acknowledged within 2 business days, reviewed by the complaints manager",
+    "score": 0.678
+   },
+   {
+    "id": "CTL-102",
+    "desc": "Weekly report of complaints open for more than 30 calendar days without a final response, escalated to the head of Customer Care",
+    "score": 0.516
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-CMP-01 states \"The complaints team acknowledges each complaint in writing within 2 business days\" which exactly matches the obligation's 2 business day deadline, and Control CTL-101 provides a daily report of complaints not acknowledged within 2 business days to detect any breach."
+ },
+ "RCN-2026-004-3.2": {
+  "obligationId": "RCN-2026-004-3.2",
+  "policies": [
+   {
+    "id": "POL-CMP-01",
+    "title": "Complaint Handling Procedure",
+    "score": 0.739
+   },
+   {
+    "id": "POL-CYB-01",
+    "title": "Cyber Incident Response Policy",
+    "score": 0.512
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-102",
+    "desc": "Weekly report of complaints open for more than 30 calendar days without a final response, escalated to the head of Customer Care",
+    "score": 0.619
+   },
+   {
+    "id": "CTL-101",
+    "desc": "Daily report of complaints not acknowledged within 2 business days, reviewed by the complaints manager",
+    "score": 0.593
+   }
+  ],
+  "verdict": "Does not meet",
+  "controlCovers": false,
+  "reason": "Policy POL-CMP-01 requires a final response within 30 calendar days whereas the obligation requires 15 business days, which is a longer deadline that does not meet the obligation, and neither control detects breaches of the 15 business day requirement."
+ },
+ "RCN-2026-004-3.3": {
+  "obligationId": "RCN-2026-004-3.3",
+  "policies": [
+   {
+    "id": "POL-CMP-02",
+    "title": "Complaint Root Cause Analysis Standard",
+    "score": 0.684
+   },
+   {
+    "id": "POL-CMP-01",
+    "title": "Complaint Handling Procedure",
+    "score": 0.466
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-103",
+    "desc": "Quarterly complaint root cause pack presented to the Executive Risk Committee, with owners for each fix",
+    "score": 0.628
+   },
+   {
+    "id": "CTL-102",
+    "desc": "Weekly report of complaints open for more than 30 calendar days without a final response, escalated to the head of Customer Care",
+    "score": 0.528
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-CMP-02 states \"The complaints quality team groups complaints by product and cause every quarter\" and \"Findings and recommended fixes are presented to the Executive Risk Committee each quarter,\" which analyzes root causes at least quarterly and reports findings to senior management, and Control CTL-103 confirms this quarterly presentation occurs."
+ },
+ "RCN-2026-005-3.1": {
+  "obligationId": "RCN-2026-005-3.1",
+  "policies": [
+   {
+    "id": "POL-AML-01",
+    "title": "Customer Due Diligence Policy",
+    "score": 0.792
+   },
+   {
+    "id": "POL-VUL-01",
+    "title": "Vulnerable Customers Policy",
+    "score": 0.378
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-161",
+    "desc": "Account opening system blocks business accounts until owners of 25 percent or more are verified",
+    "score": 0.716
+   },
+   {
+    "id": "CTL-162",
+    "desc": "Monthly report of high-risk business customers whose beneficial ownership refresh is overdue",
+    "score": 0.46
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-AML-01 states \"For business customers, every individual owning 25 percent or more is identified and verified before account opening\" and Control CTL-161 blocks business accounts until owners of 25 percent or more are verified, exactly matching the obligation's 25 percent threshold and before-opening timing requirement."
+ },
+ "RCN-2026-005-3.2": {
+  "obligationId": "RCN-2026-005-3.2",
+  "policies": [
+   {
+    "id": "POL-AML-01",
+    "title": "Customer Due Diligence Policy",
+    "score": 0.771
+   },
+   {
+    "id": "POL-MRM-01",
+    "title": "Model Risk Management Policy",
+    "score": 0.427
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-162",
+    "desc": "Monthly report of high-risk business customers whose beneficial ownership refresh is overdue",
+    "score": 0.766
+   },
+   {
+    "id": "CTL-141",
+    "desc": "Annual Board approval of important business services and impact tolerances, recorded in Board minutes",
+    "score": 0.415
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-AML-01 states \"Beneficial ownership for high-risk business customers is refreshed every year,\" which matches the obligation's requirement of at least once a year, and CTL-162 monitors overdue refreshes for high-risk business customers, which would detect breaches of this specific obligation."
+ },
+ "RCN-2026-006-3.1": {
+  "obligationId": "RCN-2026-006-3.1",
+  "policies": [
+   {
+    "id": "POL-FRD-02",
+    "title": "Scam Reimbursement Procedure",
+    "score": 0.899
+   },
+   {
+    "id": "POL-CMP-01",
+    "title": "Complaint Handling Procedure",
+    "score": 0.461
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-173",
+    "desc": "Weekly report of scam claims open for more than 5 business days",
+    "score": 0.611
+   },
+   {
+    "id": "CTL-101",
+    "desc": "Daily report of complaints not acknowledged within 2 business days, reviewed by the complaints manager",
+    "score": 0.427
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-FRD-02 states \"Eligible victims are reimbursed within 5 business days unless there is evidence of gross negligence or first-party fraud,\" exactly matching the obligation's deadline and exceptions, and Control CTL-173 monitors scam claims open for more than 5 business days to detect breaches."
+ },
+ "RCN-2026-006-3.2": {
+  "obligationId": "RCN-2026-006-3.2",
+  "policies": [
+   {
+    "id": "POL-FRD-02",
+    "title": "Scam Reimbursement Procedure",
+    "score": 0.629
+   },
+   {
+    "id": "POL-AML-01",
+    "title": "Customer Due Diligence Policy",
+    "score": 0.43
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-174",
+    "desc": "Confirmation-of-payee check and name-mismatch warning tested in each app release",
+    "score": 0.614
+   },
+   {
+    "id": "CTL-171",
+    "desc": "Real-time fraud engine scores every outgoing instant payment before release; bypasses are logged and reviewed",
+    "score": 0.383
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-FRD-02 states \"A confirmation-of-payee check runs before the first payment to a new payee, and a warning is shown when the name does not match,\" which matches the obligation's requirements exactly, and Control CTL-174 tests this functionality in each app release."
+ },
+ "RCN-2026-007-3.1": {
+  "obligationId": "RCN-2026-007-3.1",
+  "policies": [
+   {
+    "id": "POL-CMP-01",
+    "title": "Complaint Handling Procedure",
+    "score": 0.781
+   },
+   {
+    "id": "POL-REC-01",
+    "title": "Records Retention Standard",
+    "score": 0.656
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-102",
+    "desc": "Weekly report of complaints open for more than 30 calendar days without a final response, escalated to the head of Customer Care",
+    "score": 0.556
+   },
+   {
+    "id": "CTL-101",
+    "desc": "Daily report of complaints not acknowledged within 2 business days, reviewed by the complaints manager",
+    "score": 0.489
+   }
+  ],
+  "verdict": "Does not meet",
+  "controlCovers": false,
+  "reason": "Policy POL-REC-01 deletes customer communications including complaint correspondence after 5 years, which is shorter than the required 7 years from final response, creating a conflict that prevents the obligation from being met."
+ },
+ "RCN-2026-007-3.2": {
+  "obligationId": "RCN-2026-007-3.2",
+  "policies": [
+   {
+    "id": "POL-CMP-01",
+    "title": "Complaint Handling Procedure",
+    "score": 0.639
+   },
+   {
+    "id": "POL-REC-02",
+    "title": "Regulatory Requests Procedure",
+    "score": 0.551
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-101",
+    "desc": "Daily report of complaints not acknowledged within 2 business days, reviewed by the complaints manager",
+    "score": 0.591
+   },
+   {
+    "id": "CTL-222",
+    "desc": "Final incident reports tracked to submission within 30 days of resolution",
+    "score": 0.556
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": false,
+  "reason": "Policy POL-REC-02 states that regulatory requests are \"answered within the deadline set by the supervisor, or within 10 business days if none is given,\" which matches the obligation's 10 business day deadline for providing complaint records to the Authority."
+ },
+ "RCN-2026-008-3.1": {
+  "obligationId": "RCN-2026-008-3.1",
+  "policies": [
+   {
+    "id": "POL-PRV-02",
+    "title": "Personal Data Breach Response Procedure",
+    "score": 0.83
+   },
+   {
+    "id": "POL-CYB-01",
+    "title": "Cyber Incident Response Policy",
+    "score": 0.491
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-132",
+    "desc": "Breach log review confirms supervisor notification within 72 hours for each reportable breach",
+    "score": 0.506
+   },
+   {
+    "id": "CTL-131",
+    "desc": "Weekly report of data access requests open for more than 20 days, with escalation before the 30-day limit",
+    "score": 0.399
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-PRV-02 states \"The Privacy Office notifies the Financial Data Protection Office within 72 hours of the bank becoming aware of a breach,\" which exactly matches the obligation's 72-hour deadline and scope, and Control CTL-132 confirms \"supervisor notification within 72 hours for each reportable breach.\""
+ },
+ "RCN-2026-008-3.2": {
+  "obligationId": "RCN-2026-008-3.2",
+  "policies": [
+   {
+    "id": "POL-PRV-02",
+    "title": "Personal Data Breach Response Procedure",
+    "score": 0.559
+   },
+   {
+    "id": "POL-VUL-01",
+    "title": "Vulnerable Customers Policy",
+    "score": 0.502
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-162",
+    "desc": "Monthly report of high-risk business customers whose beneficial ownership refresh is overdue",
+    "score": 0.489
+   },
+   {
+    "id": "CTL-132",
+    "desc": "Breach log review confirms supervisor notification within 72 hours for each reportable breach",
+    "score": 0.486
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": false,
+  "reason": "Policy POL-PRV-02 states the Privacy Office \"notifies affected customers without undue delay when the risk to them is high,\" which exactly matches the obligation's requirement to notify affected customers without undue delay when a breach is likely to put them at high risk."
+ },
+ "RCN-2026-009-3.1": {
+  "obligationId": "RCN-2026-009-3.1",
+  "policies": [
+   {
+    "id": "POL-TPR-01",
+    "title": "Third-Party Risk Management Policy",
+    "score": 0.572
+   },
+   {
+    "id": "POL-REC-01",
+    "title": "Records Retention Standard",
+    "score": 0.363
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-151",
+    "desc": "Supplier register completeness check for suppliers supporting important business services",
+    "score": 0.569
+   },
+   {
+    "id": "CTL-162",
+    "desc": "Monthly report of high-risk business customers whose beneficial ownership refresh is overdue",
+    "score": 0.451
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-TPR-01 states \"All suppliers are recorded in the supplier register with a criticality rating\" and \"Suppliers that support important business services are reviewed,\" and Control CTL-151 performs a \"Supplier register completeness check for suppliers supporting important business services,\" which together ensure a register of third parties that support important business services is maintained."
+ },
+ "RCN-2026-009-3.2": {
+  "obligationId": "RCN-2026-009-3.2",
+  "policies": [
+   {
+    "id": "POL-TPR-01",
+    "title": "Third-Party Risk Management Policy",
+    "score": 0.725
+   },
+   {
+    "id": "POL-LIQ-01",
+    "title": "Liquidity Risk Policy",
+    "score": 0.381
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-153",
+    "desc": "Exit plan test for each critical supplier, every two years",
+    "score": 0.642
+   },
+   {
+    "id": "CTL-152",
+    "desc": "Annual performance and risk review of each critical supplier",
+    "score": 0.489
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "POL-TPR-01 states \"Each critical supplier has a documented exit plan that is tested every two years\" and CTL-153 implements \"Exit plan test for each critical supplier, every two years\", which exactly matches the obligation's requirement for tested exit plans for critical third-party arrangements."
+ },
+ "RCN-2026-009-3.3": {
+  "obligationId": "RCN-2026-009-3.3",
+  "policies": [
+   {
+    "id": "POL-TPR-01",
+    "title": "Third-Party Risk Management Policy",
+    "score": 0.716
+   },
+   {
+    "id": "POL-MRM-01",
+    "title": "Model Risk Management Policy",
+    "score": 0.461
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-152",
+    "desc": "Annual performance and risk review of each critical supplier",
+    "score": 0.691
+   },
+   {
+    "id": "CTL-153",
+    "desc": "Exit plan test for each critical supplier, every two years",
+    "score": 0.53
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-TPR-01 states \"Suppliers that support important business services are reviewed for performance and risk at least once a year\" and Control CTL-152 implements \"Annual performance and risk review of each critical supplier,\" which matches the obligation's requirement for at least annual reviews of critical third parties."
+ },
+ "RCN-2026-010-3.1": {
+  "obligationId": "RCN-2026-010-3.1",
+  "policies": [
+   {
+    "id": "POL-VUL-01",
+    "title": "Vulnerable Customers Policy",
+    "score": 0.74
+   },
+   {
+    "id": "POL-AML-01",
+    "title": "Customer Due Diligence Policy",
+    "score": 0.468
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-182",
+    "desc": "Annual vulnerability training completion report for customer-facing colleagues",
+    "score": 0.566
+   },
+   {
+    "id": "CTL-181",
+    "desc": "Quarterly review of vulnerability flags recorded with consent",
+    "score": 0.545
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-VUL-01 states \"With the customer's consent, colleagues record disclosed vulnerabilities in the customer profile so service can be adapted,\" which directly matches the obligation's requirement to record disclosed vulnerabilities with consent so staff can adapt service."
+ },
+ "RCN-2026-010-3.2": {
+  "obligationId": "RCN-2026-010-3.2",
+  "policies": [
+   {
+    "id": "POL-VUL-01",
+    "title": "Vulnerable Customers Policy",
+    "score": 0.754
+   },
+   {
+    "id": "POL-TRN-01",
+    "title": "Mandatory Training Standard",
+    "score": 0.538
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-182",
+    "desc": "Annual vulnerability training completion report for customer-facing colleagues",
+    "score": 0.707
+   },
+   {
+    "id": "CTL-152",
+    "desc": "Annual performance and risk review of each critical supplier",
+    "score": 0.457
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-VUL-01 states \"All customer-facing colleagues complete vulnerability training every year\" which exactly matches the obligation's requirement for annual training of customer-facing staff on recognizing and responding to vulnerability signs, and Control CTL-182 monitors compliance with this specific obligation through annual completion reporting."
+ },
+ "RCN-2026-011-3.1": {
+  "obligationId": "RCN-2026-011-3.1",
+  "policies": [
+   {
+    "id": "POL-TPR-01",
+    "title": "Third-Party Risk Management Policy",
+    "score": 0.468
+   },
+   {
+    "id": "POL-MRM-01",
+    "title": "Model Risk Management Policy",
+    "score": 0.457
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-232",
+    "desc": "Monthly performance monitoring report for internally built credit scorecards",
+    "score": 0.443
+   },
+   {
+    "id": "CTL-152",
+    "desc": "Annual performance and risk review of each critical supplier",
+    "score": 0.436
+   }
+  ],
+  "verdict": "Does not meet",
+  "controlCovers": false,
+  "reason": "Neither policy requires maintaining an inventory of third-party AI models that records the supplier, purpose and products affected; POL-TPR-01 only requires a supplier register with criticality ratings, and POL-MRM-01 applies only to internally built models, not third-party AI models."
+ },
+ "RCN-2026-011-3.2": {
+  "obligationId": "RCN-2026-011-3.2",
+  "policies": [
+   {
+    "id": "POL-MRM-01",
+    "title": "Model Risk Management Policy",
+    "score": 0.583
+   },
+   {
+    "id": "POL-TPR-01",
+    "title": "Third-Party Risk Management Policy",
+    "score": 0.542
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-213",
+    "desc": "Quarterly capital forecast reviewed by the Board Risk Committee",
+    "score": 0.466
+   },
+   {
+    "id": "CTL-152",
+    "desc": "Annual performance and risk review of each critical supplier",
+    "score": 0.461
+   }
+  ],
+  "verdict": "Does not meet",
+  "controlCovers": false,
+  "reason": "The obligation requires the model risk committee to review \"each third-party AI model in the inventory\" annually, but POL-MRM-01 covers only models \"built by the bank\" and POL-TPR-01/CTL-152 review \"critical suppliers\" rather than each third-party AI model specifically."
+ },
+ "RCN-2026-012-3.1": {
+  "obligationId": "RCN-2026-012-3.1",
+  "policies": [
+   {
+    "id": "POL-AML-02",
+    "title": "Suspicious Activity Reporting Procedure",
+    "score": 0.891
+   },
+   {
+    "id": "POL-CYB-01",
+    "title": "Cyber Incident Response Policy",
+    "score": 0.487
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-163",
+    "desc": "Weekly report of investigations approaching the 30-day filing deadline",
+    "score": 0.603
+   },
+   {
+    "id": "CTL-164",
+    "desc": "Quarterly suspicious activity reporting metrics presented to the Board Risk Committee",
+    "score": 0.54
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-AML-02 states \"Suspicious activity reports are filed within 30 calendar days of first detection\" which exactly matches the obligation's 30 calendar day deadline, and Control CTL-163's weekly report of investigations approaching the deadline would detect potential breaches of this specific filing timeframe."
+ },
+ "RCN-2026-012-3.2": {
+  "obligationId": "RCN-2026-012-3.2",
+  "policies": [
+   {
+    "id": "POL-AML-02",
+    "title": "Suspicious Activity Reporting Procedure",
+    "score": 0.808
+   },
+   {
+    "id": "POL-CYB-01",
+    "title": "Cyber Incident Response Policy",
+    "score": 0.432
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-164",
+    "desc": "Quarterly suspicious activity reporting metrics presented to the Board Risk Committee",
+    "score": 0.711
+   },
+   {
+    "id": "CTL-301",
+    "desc": "Quarterly whistleblowing report to the Audit Committee",
+    "score": 0.53
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-AML-02 states \"Volumes and timeliness are reported to the Board Risk Committee each quarter\" which meets the quarterly reporting requirement, and Control CTL-164 confirms \"Quarterly suspicious activity reporting metrics presented to the Board Risk Committee.\""
+ },
+ "RCN-2026-013-3.1": {
+  "obligationId": "RCN-2026-013-3.1",
+  "policies": [
+   {
+    "id": "POL-CRD-01",
+    "title": "Credit Card Statement Standard",
+    "score": 0.741
+   },
+   {
+    "id": "POL-FEE-01",
+    "title": "Fees and Charges Disclosure Policy",
+    "score": 0.483
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-191",
+    "desc": "Statement template review confirms the minimum-payment warning, time to repay and total interest",
+    "score": 0.604
+   },
+   {
+    "id": "CTL-122",
+    "desc": "Monthly reconciliation that every account charged a fee received a fee summary with a year-to-date total",
+    "score": 0.421
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-CRD-01 requires monthly card statements to show \"a minimum-payment warning with the time to repay and total interest if only the minimum is paid,\" which matches the obligation's requirement to show how long it would take to repay the balance by paying only the minimum and the total interest that would be paid, and Control CTL-191 confirms these disclosures are present."
+ },
+ "RCN-2026-014-3.1": {
+  "obligationId": "RCN-2026-014-3.1",
+  "policies": [
+   {
+    "id": "POL-FRD-01",
+    "title": "Payment Fraud Prevention Policy",
+    "score": 0.78
+   },
+   {
+    "id": "POL-AML-03",
+    "title": "Sanctions Screening Standard",
+    "score": 0.532
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-171",
+    "desc": "Real-time fraud engine scores every outgoing instant payment before release; bypasses are logged and reviewed",
+    "score": 0.726
+   },
+   {
+    "id": "CTL-174",
+    "desc": "Confirmation-of-payee check and name-mismatch warning tested in each app release",
+    "score": 0.437
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-FRD-01 states \"Outgoing instant payments are scored by the real-time fraud engine before release\" and Control CTL-171 confirms \"Real-time fraud engine scores every outgoing instant payment before release\", which exactly matches the obligation's requirement to screen outgoing instant payments for fraud in real time before release."
+ },
+ "RCN-2026-014-3.2": {
+  "obligationId": "RCN-2026-014-3.2",
+  "policies": [
+   {
+    "id": "POL-FRD-01",
+    "title": "Payment Fraud Prevention Policy",
+    "score": 0.743
+   },
+   {
+    "id": "POL-CMP-01",
+    "title": "Complaint Handling Procedure",
+    "score": 0.457
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-172",
+    "desc": "Daily test call to the 24/7 fraud reporting line",
+    "score": 0.711
+   },
+   {
+    "id": "CTL-173",
+    "desc": "Weekly report of scam claims open for more than 5 business days",
+    "score": 0.566
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-FRD-01 states \"Customers can report fraud by phone or in the app 24 hours a day, every day\" which exactly matches the obligation's requirement, and Control CTL-172 performs a daily test call to verify the 24/7 fraud reporting line remains available."
+ },
+ "RCN-2026-015-3.1": {
+  "obligationId": "RCN-2026-015-3.1",
+  "policies": [
+   {
+    "id": "POL-LIQ-01",
+    "title": "Liquidity Risk Policy",
+    "score": 0.834
+   },
+   {
+    "id": "POL-TPR-01",
+    "title": "Third-Party Risk Management Policy",
+    "score": 0.397
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-211",
+    "desc": "Monthly liquidity stress test results, including the digital outflow scenario, reviewed by ALCO",
+    "score": 0.713
+   },
+   {
+    "id": "CTL-212",
+    "desc": "Daily check that liquid assets cover 30 days of net outflows in the most severe scenario",
+    "score": 0.579
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-LIQ-01 states \"Liquidity stress tests run monthly and include a rapid digital deposit outflow scenario\" which matches the obligation's requirement for at least monthly tests including a scenario with rapid outflows of digital deposits, and Control CTL-211 confirms \"Monthly liquidity stress test results, including the digital outflow scenario, reviewed by ALCO\" which would detect any failure to perform the required tests."
+ },
+ "RCN-2026-015-3.2": {
+  "obligationId": "RCN-2026-015-3.2",
+  "policies": [
+   {
+    "id": "POL-LIQ-01",
+    "title": "Liquidity Risk Policy",
+    "score": 0.756
+   },
+   {
+    "id": "POL-TPR-01",
+    "title": "Third-Party Risk Management Policy",
+    "score": 0.377
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-212",
+    "desc": "Daily check that liquid assets cover 30 days of net outflows in the most severe scenario",
+    "score": 0.741
+   },
+   {
+    "id": "CTL-211",
+    "desc": "Monthly liquidity stress test results, including the digital outflow scenario, reviewed by ALCO",
+    "score": 0.481
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-LIQ-01 states \"The bank holds liquid assets sufficient to cover net outflows in its most severe scenario for at least 30 days\" which exactly matches the obligation's requirement, and Control CTL-212 performs a daily check that liquid assets cover 30 days of net outflows in the most severe scenario, which would detect any breach."
+ },
+ "RCN-2026-016-3.1": {
+  "obligationId": "RCN-2026-016-3.1",
+  "policies": [
+   {
+    "id": "POL-MTG-02",
+    "title": "Mortgage Underwriting Policy",
+    "score": 0.396
+   },
+   {
+    "id": "POL-AML-01",
+    "title": "Customer Due Diligence Policy",
+    "score": 0.37
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-154",
+    "desc": "Security assessment sign-off before onboarding any cloud service holding customer data",
+    "score": 0.382
+   },
+   {
+    "id": "CTL-152",
+    "desc": "Annual performance and risk review of each critical supplier",
+    "score": 0.336
+   }
+  ],
+  "verdict": "Does not meet",
+  "controlCovers": false,
+  "reason": "None of the policies or controls address the requirement for a written suitability assessment before recommending an annuity to a consumer, as they cover mortgage underwriting, AML due diligence, cloud security, and supplier reviews instead."
+ },
+ "RCN-2026-016-3.2": {
+  "obligationId": "RCN-2026-016-3.2",
+  "policies": [
+   {
+    "id": "POL-FEE-01",
+    "title": "Fees and Charges Disclosure Policy",
+    "score": 0.426
+   },
+   {
+    "id": "POL-FEE-02",
+    "title": "Pricing Change Notification Procedure",
+    "score": 0.339
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-121",
+    "desc": "App release test confirms the overdraft fee prompt and cancel option appear before a fee-bearing transaction",
+    "score": 0.363
+   },
+   {
+    "id": "CTL-123",
+    "desc": "Pricing change checklist confirms customer notices were sent at least 60 days before a fee increase",
+    "score": 0.353
+   }
+  ],
+  "verdict": "Does not meet",
+  "controlCovers": false,
+  "reason": "The policies address deposit account fees and overdraft charges but do not cover surrender charges or surrender periods for annuity contracts, which are insurance products with entirely different fee structures."
+ },
+ "RCN-2026-017-3.1": {
+  "obligationId": "RCN-2026-017-3.1",
+  "policies": [
+   {
+    "id": "POL-CAP-01",
+    "title": "Capital Planning Policy",
+    "score": 0.419
+   },
+   {
+    "id": "POL-AML-02",
+    "title": "Suspicious Activity Reporting Procedure",
+    "score": 0.404
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-213",
+    "desc": "Quarterly capital forecast reviewed by the Board Risk Committee",
+    "score": 0.468
+   },
+   {
+    "id": "CTL-301",
+    "desc": "Quarterly whistleblowing report to the Audit Committee",
+    "score": 0.441
+   }
+  ],
+  "verdict": "Does not meet",
+  "controlCovers": false,
+  "reason": "Neither the capital planning policy nor the suspicious activity reporting procedure address the obligation to publish a quarterly report on venues to which customer equity orders were routed and execution quality obtained."
+ },
+ "RCN-2026-018-3.1": {
+  "obligationId": "RCN-2026-018-3.1",
+  "policies": [
+   {
+    "id": "POL-ACC-01",
+    "title": "Accessibility Standard",
+    "score": 0.809
+   },
+   {
+    "id": "POL-MKT-01",
+    "title": "Advertising and Financial Promotions Standard",
+    "score": 0.445
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-183",
+    "desc": "Monthly report of accessible-format requests and their fulfilment times",
+    "score": 0.383
+   },
+   {
+    "id": "CTL-141",
+    "desc": "Annual Board approval of important business services and impact tolerances, recorded in Board minutes",
+    "score": 0.379
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-ACC-01 states \"Statements and important notices are available in large print, braille and screen-reader friendly formats on request, free of charge,\" which exactly matches all obligation requirements, and CTL-183's monthly monitoring of accessible-format requests and fulfilment times would detect failures to provide these formats."
+ },
+ "RCN-2026-019-3.1": {
+  "obligationId": "RCN-2026-019-3.1",
+  "policies": [
+   {
+    "id": "POL-PRV-03",
+    "title": "Marketing Consent Standard",
+    "score": 0.685
+   },
+   {
+    "id": "POL-PRV-01",
+    "title": "Privacy and Data Subject Rights Procedure",
+    "score": 0.486
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-133",
+    "desc": "Monthly check that marketing send lists exclude customers who withdrew consent",
+    "score": 0.574
+   },
+   {
+    "id": "CTL-251",
+    "desc": "Compliance approval recorded for every financial promotion before release",
+    "score": 0.455
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": false,
+  "reason": "Policy POL-PRV-03 states \"The date, channel and wording of each opt-in are stored in the consent register,\" which meets the obligation to keep a record of when and how each customer gave consent to electronic marketing."
+ },
+ "RCN-2026-019-3.2": {
+  "obligationId": "RCN-2026-019-3.2",
+  "policies": [
+   {
+    "id": "POL-PRV-03",
+    "title": "Marketing Consent Standard",
+    "score": 0.734
+   },
+   {
+    "id": "POL-REC-01",
+    "title": "Records Retention Standard",
+    "score": 0.472
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-133",
+    "desc": "Monthly check that marketing send lists exclude customers who withdrew consent",
+    "score": 0.61
+   },
+   {
+    "id": "CTL-123",
+    "desc": "Pricing change checklist confirms customer notices were sent at least 60 days before a fee increase",
+    "score": 0.423
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": false,
+  "reason": "Policy POL-PRV-03 requires withdrawals of consent to be applied within 5 days, which is shorter than the 10-day obligation deadline."
+ },
+ "RCN-2026-020-3.1": {
+  "obligationId": "RCN-2026-020-3.1",
+  "policies": [
+   {
+    "id": "POL-MTG-01",
+    "title": "Mortgage Arrears Management Procedure",
+    "score": 0.797
+   },
+   {
+    "id": "POL-FRD-02",
+    "title": "Scam Reimbursement Procedure",
+    "score": 0.422
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-201",
+    "desc": "Daily arrears report confirms contact attempts within 10 days of a missed payment",
+    "score": 0.622
+   },
+   {
+    "id": "CTL-192",
+    "desc": "Dialer rule limits calls about one debt to 7 in 7 days; exceptions reviewed weekly",
+    "score": 0.411
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-MTG-01 requires contact within 10 calendar days, which is shorter than the regulatory obligation of 15 calendar days, and Control CTL-201 confirms contact attempts within 10 days of a missed payment."
+ },
+ "RCN-2026-020-3.2": {
+  "obligationId": "RCN-2026-020-3.2",
+  "policies": [
+   {
+    "id": "POL-MTG-01",
+    "title": "Mortgage Arrears Management Procedure",
+    "score": 0.737
+   },
+   {
+    "id": "POL-FLN-01",
+    "title": "Fair Lending Policy",
+    "score": 0.383
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-202",
+    "desc": "Repossession checklist requires evidence that forbearance options were offered",
+    "score": 0.615
+   },
+   {
+    "id": "CTL-121",
+    "desc": "App release test confirms the overdraft fee prompt and cancel option appear before a fee-bearing transaction",
+    "score": 0.354
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-MTG-01 states \"Borrowers in financial difficulty are offered forbearance options, including temporary payment reductions and term extensions, before any repossession proceedings start,\" which directly matches the obligation's requirement, and CTL-202 requires evidence that forbearance options were offered before repossession."
+ },
+ "RCN-2026-021-3.1": {
+  "obligationId": "RCN-2026-021-3.1",
+  "policies": [
+   {
+    "id": "POL-AML-03",
+    "title": "Sanctions Screening Standard",
+    "score": 0.859
+   },
+   {
+    "id": "POL-PRV-03",
+    "title": "Marketing Consent Standard",
+    "score": 0.437
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-165",
+    "desc": "Rescreening job runs automatically within 24 hours of each sanctions list update, with completion logged",
+    "score": 0.7
+   },
+   {
+    "id": "CTL-123",
+    "desc": "Pricing change checklist confirms customer notices were sent at least 60 days before a fee increase",
+    "score": 0.474
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-AML-03 states \"When a sanctions list is updated, the full customer base is rescreened within 24 hours of publication\" which exactly matches the obligation's 24-hour deadline and full customer base scope, and Control CTL-165 confirms \"Rescreening job runs automatically within 24 hours of each sanctions list update, with completion logged\" which would detect any breach of this timing requirement."
+ },
+ "RCN-2026-022-3.1": {
+  "obligationId": "RCN-2026-022-3.1",
+  "policies": [
+   {
+    "id": "POL-CYB-01",
+    "title": "Cyber Incident Response Policy",
+    "score": 0.917
+   },
+   {
+    "id": "POL-PRV-02",
+    "title": "Personal Data Breach Response Procedure",
+    "score": 0.577
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-132",
+    "desc": "Breach log review confirms supervisor notification within 72 hours for each reportable breach",
+    "score": 0.517
+   },
+   {
+    "id": "CTL-221",
+    "desc": "Incident log review confirms supervisor notification within 24 hours of a significant classification",
+    "score": 0.496
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-CYB-01 states \"Significant cyber incidents are reported to the Prudential Banking Board within 24 hours of being classified as significant,\" which exactly matches the obligation's 24-hour deadline and reporting requirement, and Control CTL-221 confirms \"supervisor notification within 24 hours of a significant classification\" which would detect non-compliance with this specific obligation."
+ },
+ "RCN-2026-022-3.2": {
+  "obligationId": "RCN-2026-022-3.2",
+  "policies": [
+   {
+    "id": "POL-CYB-01",
+    "title": "Cyber Incident Response Policy",
+    "score": 0.728
+   },
+   {
+    "id": "POL-PRV-02",
+    "title": "Personal Data Breach Response Procedure",
+    "score": 0.533
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-222",
+    "desc": "Final incident reports tracked to submission within 30 days of resolution",
+    "score": 0.584
+   },
+   {
+    "id": "CTL-132",
+    "desc": "Breach log review confirms supervisor notification within 72 hours for each reportable breach",
+    "score": 0.465
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-CYB-01 states \"A final report with root cause and remediation follows within 30 days of resolution\" and Control CTL-222 tracks \"Final incident reports tracked to submission within 30 days of resolution,\" which together meet the obligation's 30-day deadline and requirements for root cause and remediation reporting to the Prudential Banking Board."
+ },
+ "RCN-2026-023-3.1": {
+  "obligationId": "RCN-2026-023-3.1",
+  "policies": [
+   {
+    "id": "POL-CRD-02",
+    "title": "Credit Card Collections Procedure",
+    "score": 0.73
+   },
+   {
+    "id": "POL-FRD-01",
+    "title": "Payment Fraud Prevention Policy",
+    "score": 0.418
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-192",
+    "desc": "Dialer rule limits calls about one debt to 7 in 7 days; exceptions reviewed weekly",
+    "score": 0.725
+   },
+   {
+    "id": "CTL-201",
+    "desc": "Daily arrears report confirms contact attempts within 10 days of a missed payment",
+    "score": 0.461
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-CRD-02 states \"Calls about one debt are limited to 7 in any 7-day period\" which matches the obligation's threshold exactly, and Control CTL-192 enforces this by limiting calls about one debt to 7 in 7 days with weekly exception reviews."
+ },
+ "RCN-2026-023-3.2": {
+  "obligationId": "RCN-2026-023-3.2",
+  "policies": [
+   {
+    "id": "POL-CRD-02",
+    "title": "Credit Card Collections Procedure",
+    "score": 0.591
+   },
+   {
+    "id": "POL-PRV-03",
+    "title": "Marketing Consent Standard",
+    "score": 0.536
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-193",
+    "desc": "Monthly check that written-contact-only requests are flagged in the dialer",
+    "score": 0.497
+   },
+   {
+    "id": "CTL-133",
+    "desc": "Monthly check that marketing send lists exclude customers who withdrew consent",
+    "score": 0.442
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-CRD-02 states \"Requests to be contacted only in writing are recorded and honored\" which directly meets the obligation, and Control CTL-193 verifies that \"written-contact-only requests are flagged in the dialer\" which would detect breaches of this specific obligation."
+ },
+ "RCN-2026-024-3.1": {
+  "obligationId": "RCN-2026-024-3.1",
+  "policies": [
+   {
+    "id": "POL-RES-03",
+    "title": "Payment Outage Communication Procedure",
+    "score": 0.727
+   },
+   {
+    "id": "POL-FRD-01",
+    "title": "Payment Fraud Prevention Policy",
+    "score": 0.554
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-143",
+    "desc": "Outage communication timestamps compared with outage start time after every payment outage",
+    "score": 0.545
+   },
+   {
+    "id": "CTL-201",
+    "desc": "Daily arrears report confirms contact attempts within 10 days of a missed payment",
+    "score": 0.468
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-RES-03 requires Payments Operations to post a status message in the mobile app and on the website within 1 hour when customers cannot make payments, matching the obligation's 1-hour deadline exactly, and Control CTL-143 would detect a breach by comparing outage communication timestamps with outage start time after every payment outage."
+ },
+ "RCN-2026-025-3.1": {
+  "obligationId": "RCN-2026-025-3.1",
+  "policies": [
+   {
+    "id": "POL-FEE-02",
+    "title": "Pricing Change Notification Procedure",
+    "score": 0.858
+   },
+   {
+    "id": "POL-DEP-01",
+    "title": "Deposit Account Terms Policy",
+    "score": 0.456
+   }
+  ],
+  "controls": [
+   {
+    "id": "CTL-123",
+    "desc": "Pricing change checklist confirms customer notices were sent at least 60 days before a fee increase",
+    "score": 0.652
+   },
+   {
+    "id": "CTL-201",
+    "desc": "Daily arrears report confirms contact attempts within 10 days of a missed payment",
+    "score": 0.353
+   }
+  ],
+  "verdict": "Meets",
+  "controlCovers": true,
+  "reason": "Policy POL-FEE-02 states \"Customers are given at least 60 days' written notice before any fee on a deposit account increases\" which exactly matches the obligation's 60-day written notice requirement, and Control CTL-123 confirms this by verifying \"customer notices were sent at least 60 days before a fee increase.\""
+ }
+}

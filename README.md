@@ -17,7 +17,7 @@ The app is dressed as **Obliqa Change Desk**, a fictional product (design notes 
 | Screen | What it shows | Snowflake capability |
 | --- | --- | --- |
 | Change inbox | KPI tiles, an effective-date runway chart, and a three-pane docket (filters, notices, reading pane) with the AI assessment, decision and obligations | Stage, stream and task; AI_PARSE_DOCUMENT; AI_COMPLETE |
-| Notice detail | AI assessment (re-run on demand), analyst decision with reason, obligations with their mapping, source PDF and parsed text | AI_COMPLETE structured output; AI_EXTRACT; AI_EMBED |
+| Notice detail | AI assessment (re-run on demand), analyst decision with reason, obligations with their mapping, source PDF and parsed text. **Extract again** re-runs Document AI on the PDF; **Re-map this obligation** re-embeds it, re-ranks policies and controls and asks for a fresh coverage verdict | AI_COMPLETE structured output; AI_PARSE_DOCUMENT and AI_EXTRACT (pipeline and on demand); AI_EMBED + VECTOR_COSINE_SIMILARITY (pipeline and on demand) |
 | Obligation map | Every obligation with its two closest policies and closest control, similarity scores, coverage verdict; gaps highlighted | AI_EMBED + VECTOR_COSINE_SIMILARITY; AI_COMPLETE |
 | Gap tracker | Board and table views of gaps with owner, due date, status, evidence and history; owners update them; CSV export | Tables with app write-back |
 | Ask the rulebook | Q&A with staged progress, a streamed answer, citation chips and source index cards | Cortex Agents; Cortex Search |
@@ -76,14 +76,16 @@ Least-privilege path: setup uses ACCOUNTADMIN only for the account-level block (
 
 ### Expected cost and time
 
-- **Setup:** 97 to 109 seconds per run in our tests (24 notices; latest run November 20, 2026: 109 seconds).
+- **Setup:** 97 to 109 seconds per run in our tests (24 notices; latest run November 20, 2026: 101 seconds).
 - **Warehouse:** 0.41 credits in total for three full setup runs plus app testing, measured with `WAREHOUSE_METERING_HISTORY`.
 - **Cortex AI:** each setup run makes 24 AI_PARSE_DOCUMENT and 24 AI_EXTRACT calls, about 190 AI_EMBED calls on short texts, and about 70 AI_COMPLETE calls. Check your own usage in `SNOWFLAKE.ACCOUNT_USAGE.CORTEX_AISQL_USAGE_HISTORY` (it lags by a few hours). The Cortex Search service also bills for serving while it exists, so run cleanup when done.
 - **App (live, measured):** screens load in 0.1 to 3 seconds; re-assessing a notice with AI_COMPLETE took a median 3.4 seconds; agent answers took a median 12.5 seconds (up to 17 seconds; 16.8 seconds in the November 20 run).
-- **Task:** the held-back notice was processed in a 23-second task run, about 6 minutes after the file landed.
+- **On-demand pipeline steps (live, measured November 20, 2026):** Extract again (AI_PARSE_DOCUMENT OCR + AI_EXTRACT on one PDF) took about 8 seconds; Re-map this obligation (AI_EMBED, VECTOR_COSINE_SIMILARITY, AI_COMPLETE) took 4 to 5 seconds. Both are read-only: they show fresh results next to what the pipeline stored and don't rewrite the tables. Re-mapping all 47 obligations returned the same verdict as the pipeline for every assessed one.
+- **Task:** the held-back notice was processed in a 23-second task run, about 4 to 6 minutes after the file landed (4 minutes in the November 20 run).
 
 ## Known limitations
 
+- The inbox, map and gap tracker show what the ingestion pipeline (stream + task) stored. The on-demand buttons let you watch each AI step run, but their results are not written back.
 - Coverage verdicts and conflict checks are AI suggestions. On this synthetic set the pipeline found the four planted gaps and no others in our runs, but wording and borderline verdicts ("Partially meets") can vary between runs. An analyst must review each one.
 - Each obligation is checked against its two closest policies and two closest controls. An obligation met by a policy that ranks lower is reported as not met.
 - Overriding an AI dismissal records the analyst's decision; it does not re-run the coverage check for that notice's obligations (they stay "Not assessed").

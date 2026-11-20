@@ -3,7 +3,7 @@
 // which searches the RULEBOOK_SEARCH Cortex Search service. Every statement uses bind variables.
 import { MODEL, type RctData } from './rct-data';
 import { query } from './snowflake';
-import type { Answer, Citation, Decision, Gap, MapRow, NoticeRow, Provenance } from './types';
+import type { Answer, Citation, Decision, Extraction, Gap, MapRow, NoticeRow, Provenance, Remap } from './types';
 
 type Row = Record<string, unknown>;
 const AGENT = process.env.SNOWFLAKE_AGENT_NAME ?? 'REG_CHANGE_DEMO.RCT.RULEBOOK_AGENT';
@@ -147,6 +147,51 @@ export const liveData: RctData = {
     if (!rows[0]) throw new Error('Notice not found');
     const r = J<Row>(rows[0].R, {});
     return { applicable: r.applicable === true, summary: S(r.summary), reason: S(r.reason), products: (r.products_affected as string[]) ?? [], provenance: live(ms) };
+  },
+
+  async extract(id) {
+    const [rows, ms] = await timed(() => query<Row>(`SELECT TO_JSON(AI_PARSE_DOCUMENT(TO_FILE('@NOTICE_DOCS', file_name), {'mode': 'OCR'})) P,
+        TO_JSON(AI_EXTRACT(file => TO_FILE('@NOTICE_DOCS', file_name), responseFormat => (SELECT response_format FROM EXTRACTION_SCHEMA)):response) X
+      FROM NOTICES WHERE notice_id = ?`, [id]));
+    if (!rows[0]) throw new Error('Notice not found');
+    const p = J<Row>(rows[0].P, {}); const x = J<Row>(rows[0].X, {});
+    const ob = (x.obligations ?? {}) as { ref?: string[]; requirement?: string[] };
+    return { noticeId: id, pages: N((p.metadata as Row | undefined)?.pageCount), chars: S(p.content).length, regulator: S(x.regulator), title: S(x.title),
+      effective: S(x.effective_date), obligations: (ob.ref ?? []).map((r, i) => ({ ref: S(r), text: S(ob.requirement?.[i]) })), provenance: live(ms) };
+  },
+
+  async remap(id) {
+    const [res, ms] = await timed(async () => {
+      const ranked = await query<Row>(`WITH o AS (SELECT AI_EMBED('snowflake-arctic-embed-l-v2.0', obligation_text) v FROM OBLIGATIONS WHERE obligation_id = ?),
+        p AS (SELECT pv.policy_id id, MAX(VECTOR_COSINE_SIMILARITY(o.v, pv.v)) s FROM o, POLICY_VECTORS pv GROUP BY pv.policy_id),
+        c AS (SELECT cv.control_id id, VECTOR_COSINE_SIMILARITY(o.v, cv.v) s FROM o, CONTROL_VECTORS cv)
+        SELECT 'P' kind, id, ROUND(s, 3) score FROM p QUALIFY ROW_NUMBER() OVER (ORDER BY s DESC) <= 2
+        UNION ALL SELECT 'C', id, ROUND(s, 3) FROM c QUALIFY ROW_NUMBER() OVER (ORDER BY s DESC) <= 2
+        ORDER BY kind DESC, score DESC`, [id]);
+      const pol = ranked.filter((r) => r.KIND === 'P'), ctl = ranked.filter((r) => r.KIND === 'C');
+      if (pol.length < 2 || ctl.length < 2) throw new Error('Obligation not found');
+      const v = await query<Row>(`SELECT TO_VARCHAR(AI_COMPLETE(model => ?,
+          prompt => 'You check whether a bank''s policy and control meet a new regulatory obligation. Compare deadlines, frequencies, '
+            || 'thresholds and scope exactly; a longer deadline, lower frequency or narrower scope than the obligation does not meet it. '
+            || 'verdict is one of "Meets", "Partially meets", "Does not meet". control_covers is true only if the control would '
+            || 'detect or prevent a breach of this specific obligation. reason is one sentence quoting the decisive wording. '
+            || 'Judge the policies and controls together: the obligation is met if either policy meets it. '
+            || 'Obligation: ' || o.obligation_text
+            || ' Policy ' || p.policy_id || ' (' || p.title || '): ' || p.policy_text
+            || ' Policy ' || p2.policy_id || ' (' || p2.title || '): ' || p2.policy_text
+            || ' Control ' || c.control_id || ': ' || c.description || ' Control ' || c2.control_id || ': ' || c2.description,
+          response_format => TYPE OBJECT(verdict STRING, control_covers BOOLEAN, reason STRING))) R,
+          p.title PT, p2.title P2T, c.description CD, c2.description C2D
+        FROM OBLIGATIONS o, POLICIES p, POLICIES p2, CONTROLS c, CONTROLS c2
+        WHERE o.obligation_id = ? AND p.policy_id = ? AND p2.policy_id = ? AND c.control_id = ? AND c2.control_id = ?`,
+        [MODEL, id, S(pol[0].ID), S(pol[1].ID), S(ctl[0].ID), S(ctl[1].ID)]);
+      return { pol, ctl, v: v[0] };
+    });
+    const r = J<Row>(res.v.R, {});
+    return { obligationId: id,
+      policies: res.pol.map((p, i) => ({ id: S(p.ID), title: S(i ? res.v.P2T : res.v.PT), score: N(p.SCORE) })),
+      controls: res.ctl.map((c, i) => ({ id: S(c.ID), desc: S(i ? res.v.C2D : res.v.CD), score: N(c.SCORE) })),
+      verdict: S(r.verdict), controlCovers: B(r.control_covers), reason: S(r.reason), provenance: live(ms) };
   },
 
   async ask(question) {

@@ -1,17 +1,18 @@
 import { NextResponse } from 'next/server';
-import { GAP_ID, GAP_STATUSES, NOTICE_ID, type RctData } from '@/lib/rct-data';
+import { GAP_ID, GAP_STATUSES, NOTICE_ID, OBLIGATION_ID, type RctData } from '@/lib/rct-data';
 import { mockData } from '@/lib/mock-data';
 import { isSnowflakeConfigured } from '@/lib/snowflake';
 
 // One entry point for every screen. Uses Snowflake when .env.local is configured and the user
 // hasn't switched to Sample mode (x-rct-mode: sample); otherwise the bundled synthetic data.
 // Live failures are returned as errors, never silently replaced with sample data.
-const OPS = new Set<keyof RctData>(['inbox', 'notice', 'map', 'gaps', 'assess', 'ask', 'decide', 'updateGap']);
+const OPS = new Set<keyof RctData>(['inbox', 'notice', 'map', 'gaps', 'assess', 'extract', 'remap', 'ask', 'decide', 'updateGap']);
 const bad = (error: string) => NextResponse.json({ error }, { status: 400 });
 
 function validate(op: string, args: unknown[]): string | null {
   const a = args[0] as Record<string, unknown> | string | undefined;
-  if ((op === 'notice' || op === 'assess') && !NOTICE_ID.test(String(a))) return 'Unknown notice';
+  if (op === 'remap' && !OBLIGATION_ID.test(String(a))) return 'Unknown obligation';
+  if ((op === 'notice' || op === 'assess' || op === 'extract') && !NOTICE_ID.test(String(a))) return 'Unknown notice';
   if (op === 'ask' && (typeof a !== 'string' || !a.trim() || a.length > 500)) return 'Question must be 1 to 500 characters';
   if (op === 'decide') {
     const d = a as Record<string, unknown>;

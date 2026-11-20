@@ -1,0 +1,440 @@
+{
+ "RCN-2026-001": {
+  "noticeId": "RCN-2026-001",
+  "pages": 1,
+  "chars": 1066,
+  "regulator": "Retail Conduct Authority",
+  "title": "Overdraft fee transparency",
+  "effective": "2027-02-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "Before an overdraft fee is charged on a card or app transaction, a firm must show the consumer the fee amount and give a choice to cancel the transaction."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must send each consumer a monthly summary of all overdraft and returned-item fees charged in the previous month, with a year-to-date total."
+   }
+  ]
+ },
+ "RCN-2026-002": {
+  "noticeId": "RCN-2026-002",
+  "pages": 1,
+  "chars": 997,
+  "regulator": "Financial Data Protection Office",
+  "title": "Responding to customer data access requests",
+  "effective": "2026-12-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must respond to a customer data access request within 30 calendar days of receiving it, providing a copy of the personal data held."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must keep a log of every data access request, including the date received, the date answered and the outcome."
+   }
+  ]
+ },
+ "RCN-2026-003": {
+  "noticeId": "RCN-2026-003",
+  "pages": 1,
+  "chars": 1082,
+  "regulator": "Prudential Banking Board",
+  "title": "Operational resilience of important business services",
+  "effective": "2027-03-31",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must identify its important business services and set an impact tolerance for the maximum tolerable disruption of each."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must test its ability to remain within impact tolerance through severe but plausible scenario exercises at least once a year."
+   },
+   {
+    "ref": "3.3",
+    "text": "The board must approve the list of important business services and impact tolerances each year."
+   }
+  ]
+ },
+ "RCN-2026-004": {
+  "noticeId": "RCN-2026-004",
+  "pages": 1,
+  "chars": 1111,
+  "regulator": "Retail Conduct Authority",
+  "title": "Complaint handling timelines",
+  "effective": "2027-01-15",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must acknowledge a complaint in writing within 2 business days of receiving it."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must send the customer a final response within 15 business days of receiving a complaint."
+   },
+   {
+    "ref": "3.3",
+    "text": "A firm must analyze the root causes of complaints at least quarterly and report the findings to senior management."
+   }
+  ]
+ },
+ "RCN-2026-005": {
+  "noticeId": "RCN-2026-005",
+  "pages": 1,
+  "chars": 964,
+  "regulator": "Anti-Money Laundering Directorate",
+  "title": "Beneficial ownership for business customers",
+  "effective": "2027-01-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must identify and verify every individual who owns 25 percent or more of a business customer before opening the account."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must refresh beneficial ownership information for high-risk business customers at least once a year."
+   }
+  ]
+ },
+ "RCN-2026-006": {
+  "noticeId": "RCN-2026-006",
+  "pages": 1,
+  "chars": 1063,
+  "regulator": "Payments Oversight Council",
+  "title": "Reimbursement for authorized push payment scams",
+  "effective": "2027-04-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must reimburse an eligible scam victim within 5 business days of the claim, unless it has evidence of gross negligence or first-party fraud."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must check the payee name against the account and show the customer a warning when the name does not match before a first payment to a new payee."
+   }
+  ]
+ },
+ "RCN-2026-007": {
+  "noticeId": "RCN-2026-007",
+  "pages": 1,
+  "chars": 920,
+  "regulator": "Retail Conduct Authority",
+  "title": "Keeping complaint records",
+  "effective": "2027-01-15",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must retain records of each complaint, including all correspondence with the customer, for at least 7 years from the final response."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must provide complaint records to the Authority within 10 business days of a request."
+   }
+  ]
+ },
+ "RCN-2026-008": {
+  "noticeId": "RCN-2026-008",
+  "pages": 1,
+  "chars": 853,
+  "regulator": "Financial Data Protection Office",
+  "title": "Personal data breach notification",
+  "effective": "2027-01-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must notify the Financial Data Protection Office of a personal data breach within 72 hours of becoming aware of it."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must notify affected customers without undue delay when a breach is likely to put them at high risk."
+   }
+  ]
+ },
+ "RCN-2026-009": {
+  "noticeId": "RCN-2026-009",
+  "pages": 1,
+  "chars": 985,
+  "regulator": "Prudential Banking Board",
+  "title": "Managing critical third parties",
+  "effective": "2027-03-31",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must keep a register of third parties that support important business services."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must maintain a tested exit plan for each critical third-party arrangement."
+   },
+   {
+    "ref": "3.3",
+    "text": "A firm must review the performance and risk of each critical third party at least once a year."
+   }
+  ]
+ },
+ "RCN-2026-010": {
+  "noticeId": "RCN-2026-010",
+  "pages": 1,
+  "chars": 915,
+  "regulator": "Retail Conduct Authority",
+  "title": "Customers in vulnerable circumstances",
+  "effective": "2027-02-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must record, with the customer's consent, any vulnerability a customer discloses, so that staff can adapt how they serve that customer."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must train customer-facing staff to recognize and respond to signs of vulnerability at least once a year."
+   }
+  ]
+ },
+ "RCN-2026-011": {
+  "noticeId": "RCN-2026-011",
+  "pages": 1,
+  "chars": 1087,
+  "regulator": "Prudential Banking Board",
+  "title": "Third-party AI models in credit decisions",
+  "effective": "2027-06-30",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must maintain an inventory of third-party AI models used in consumer credit decisions, recording the supplier, purpose and the products affected."
+   },
+   {
+    "ref": "3.2",
+    "text": "The model risk committee must review each third-party AI model in the inventory at least once a year, including its performance and fairness results."
+   }
+  ]
+ },
+ "RCN-2026-012": {
+  "noticeId": "RCN-2026-012",
+  "pages": 1,
+  "chars": 890,
+  "regulator": "Anti-Money Laundering Directorate",
+  "title": "Suspicious activity reporting timeliness",
+  "effective": "2027-01-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must file a suspicious activity report within 30 calendar days of first detecting the suspicious activity."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must report suspicious activity reporting volumes and timeliness to the board at least quarterly."
+   }
+  ]
+ },
+ "RCN-2026-013": {
+  "noticeId": "RCN-2026-013",
+  "pages": 1,
+  "chars": 808,
+  "regulator": "Retail Conduct Authority",
+  "title": "Credit card minimum payment warnings",
+  "effective": "2027-05-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A card issuer must show on each monthly statement how long it would take to repay the balance by paying only the minimum, and the total interest that would be paid."
+   }
+  ]
+ },
+ "RCN-2026-014": {
+  "noticeId": "RCN-2026-014",
+  "pages": 1,
+  "chars": 806,
+  "regulator": "Payments Oversight Council",
+  "title": "Fraud monitoring for instant payments",
+  "effective": "2027-04-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must screen outgoing instant payments for fraud in real time, before the payment is released."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must give customers a way to report fraud that is available 24 hours a day, every day."
+   }
+  ]
+ },
+ "RCN-2026-015": {
+  "noticeId": "RCN-2026-015",
+  "pages": 1,
+  "chars": 896,
+  "regulator": "Prudential Banking Board",
+  "title": "Liquidity stress testing",
+  "effective": "2027-03-31",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must run liquidity stress tests at least monthly, including a scenario with rapid outflows of digital deposits."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must hold enough liquid assets to cover the net outflows of its most severe stress scenario for at least 30 days."
+   }
+  ]
+ },
+ "RCN-2026-016": {
+  "noticeId": "RCN-2026-016",
+  "pages": 1,
+  "chars": 939,
+  "regulator": "Insurance Conduct Office",
+  "title": "Annuity suitability assessments",
+  "effective": "2027-03-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "An insurer or insurance intermediary must complete a written suitability assessment before recommending an annuity to a consumer."
+   },
+   {
+    "ref": "3.2",
+    "text": "An insurer must disclose surrender charges and the surrender period before the consumer signs an annuity contract."
+   }
+  ]
+ },
+ "RCN-2026-017": {
+  "noticeId": "RCN-2026-017",
+  "pages": 1,
+  "chars": 760,
+  "regulator": "Securities Markets Commission",
+  "title": "Best execution reporting for equity orders",
+  "effective": "2027-04-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A broker-dealer must publish a quarterly report on the venues to which it routed customer equity orders and the execution quality obtained."
+   }
+  ]
+ },
+ "RCN-2026-018": {
+  "noticeId": "RCN-2026-018",
+  "pages": 1,
+  "chars": 755,
+  "regulator": "Retail Conduct Authority",
+  "title": "Accessible communications",
+  "effective": "2027-02-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must offer statements and important notices in large print, braille or a screen-reader friendly format on request, at no extra cost."
+   }
+  ]
+ },
+ "RCN-2026-019": {
+  "noticeId": "RCN-2026-019",
+  "pages": 1,
+  "chars": 837,
+  "regulator": "Financial Data Protection Office",
+  "title": "Records of marketing consent",
+  "effective": "2027-01-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must keep a record of when and how each customer gave consent to electronic marketing."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must stop sending electronic marketing within 10 days after a customer withdraws consent."
+   }
+  ]
+ },
+ "RCN-2026-020": {
+  "noticeId": "RCN-2026-020",
+  "pages": 1,
+  "chars": 830,
+  "regulator": "Retail Conduct Authority",
+  "title": "Mortgage arrears and forbearance",
+  "effective": "2027-02-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must contact a mortgage borrower within 15 calendar days after a payment is missed."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must offer a borrower in financial difficulty forbearance options, such as a temporary payment reduction, before starting repossession proceedings."
+   }
+  ]
+ },
+ "RCN-2026-021": {
+  "noticeId": "RCN-2026-021",
+  "pages": 1,
+  "chars": 723,
+  "regulator": "Anti-Money Laundering Directorate",
+  "title": "Sanctions list updates",
+  "effective": "2026-12-15",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must screen its customer base against each update to the sanctions list within 24 hours of the update being published."
+   }
+  ]
+ },
+ "RCN-2026-022": {
+  "noticeId": "RCN-2026-022",
+  "pages": 1,
+  "chars": 887,
+  "regulator": "Prudential Banking Board",
+  "title": "Reporting significant cyber incidents",
+  "effective": "2027-03-31",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must report a significant cyber incident to the Prudential Banking Board within 24 hours of determining that the incident is significant."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must send the Prudential Banking Board a final incident report with root cause and remediation within 30 days after the incident is resolved."
+   }
+  ]
+ },
+ "RCN-2026-023": {
+  "noticeId": "RCN-2026-023",
+  "pages": 1,
+  "chars": 830,
+  "regulator": "Retail Conduct Authority",
+  "title": "Limits on debt collection contacts",
+  "effective": "2027-06-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must not call a consumer about a particular debt more than 7 times within 7 days."
+   },
+   {
+    "ref": "3.2",
+    "text": "A firm must honor a consumer's request to be contacted only in writing."
+   }
+  ]
+ },
+ "RCN-2026-024": {
+  "noticeId": "RCN-2026-024",
+  "pages": 1,
+  "chars": 741,
+  "regulator": "Payments Oversight Council",
+  "title": "Notifying customers of payment outages",
+  "effective": "2027-02-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must post a notice in its app and on its website within 1 hour of an outage that prevents customers from making payments."
+   }
+  ]
+ },
+ "RCN-2026-025": {
+  "noticeId": "RCN-2026-025",
+  "pages": 1,
+  "chars": 705,
+  "regulator": "Retail Conduct Authority",
+  "title": "Advance notice of fee increases",
+  "effective": "2027-03-01",
+  "obligations": [
+   {
+    "ref": "3.1",
+    "text": "A firm must give consumers at least 60 days' written notice before increasing a fee on a deposit account."
+   }
+  ]
+ }
+}

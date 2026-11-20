@@ -6,7 +6,7 @@ import gapsJson from './mock/gaps.json';
 import inboxJson from './mock/inbox.json';
 import mapJson from './mock/map.json';
 import { jitter, SAMPLE_DELAY_MS } from './sample-timing';
-import type { Answer, Assessment, Decision, DecisionInput, GapInput, Gaps, Inbox, NoticeDetail, NoticeRow, ObligationMap } from './types';
+import type { Answer, Assessment, Decision, DecisionInput, Extraction, Remap, GapInput, Gaps, Inbox, NoticeDetail, NoticeRow, ObligationMap } from './types';
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const decisions: (DecisionInput & { decidedAt: string })[] = [];
@@ -33,6 +33,8 @@ function latestDecision(id: string): Decision | null {
 const withDecision = (n: NoticeRow): NoticeRow => ({ ...n, decision: latestDecision(n.noticeId) ?? n.decision });
 
 let answers: Record<string, Omit<Answer, 'provenance'>> | null = null;
+let extracts: Record<string, Omit<Extraction, 'provenance'>> | null = null;
+let remaps: Record<string, Omit<Remap, 'provenance'>> | null = null;
 let assessments: Record<string, Omit<Assessment, 'provenance'>> | null = null;
 
 export const mockData: RctData = {
@@ -77,6 +79,20 @@ export const mockData: RctData = {
     await sleep(jitter(SAMPLE_DELAY_MS.assess));
     const a = assessments[id];
     if (!a) throw new Error('No sample assessment for this notice');
+    return { ...a, provenance: { source: 'mock' } };
+  },
+  async extract(id) {
+    extracts ??= (await load<Record<string, Omit<Extraction, 'provenance'>>>('extracts.json')) ?? {};
+    await sleep(jitter(SAMPLE_DELAY_MS.extract));
+    const a = extracts[id];
+    if (!a) throw new Error('No sample extraction is bundled for this notice. Open a story notice, or run Live mode.');
+    return { ...a, provenance: { source: 'mock' } };
+  },
+  async remap(id) {
+    remaps ??= (await load<Record<string, Omit<Remap, 'provenance'>>>('remaps.json')) ?? {};
+    await sleep(jitter(SAMPLE_DELAY_MS.remap));
+    const a = remaps[id];
+    if (!a) throw new Error('No sample mapping is bundled for this obligation. Try one from a story notice, or run Live mode.');
     return { ...a, provenance: { source: 'mock' } };
   },
   async ask(question) {

@@ -9,13 +9,60 @@ import { Reasoning } from '@/components/Reasoning';
 import { ApplicabilityPill, GapPill, Pill, PoweredBy, SampleAiBadge, Score, StreamText, VerdictPill } from '@/components/ui';
 import { daysUntil } from '@/lib/charts';
 import { data } from '@/lib/client';
-import type { Assessment, Decision, NoticeDetail } from '@/lib/types';
+import type { Assessment, Decision, Extraction, NoticeDetail, Remap } from '@/lib/types';
 
 const ASSESS_STEPS = (pages: number) => [
   `Reading the notice text (${pages.toLocaleString()} characters from AI_PARSE_DOCUMENT)`,
   'Comparing its scope with Brivanta Bank\u2019s product profile',
   'Writing applicability and summary with AI_COMPLETE (structured output)',
 ];
+
+const EXTRACT_STEPS = ['Reading the PDF from the NOTICE_DOCS stage', 'Running AI_PARSE_DOCUMENT (OCR) for the full text', 'Running AI_EXTRACT for header fields and the numbered requirements'];
+const REMAP_STEPS = ['Embedding the obligation with AI_EMBED', 'Ranking policy sentences and controls with VECTOR_COSINE_SIMILARITY', 'Judging coverage of the top two policies and controls with AI_COMPLETE'];
+
+/** Runs the Document AI step on this notice now and compares it with what the pipeline stored. Read-only. */
+function ExtractAgain({ noticeId, stored }: { noticeId: string; stored: number }) {
+  const [busy, setBusy] = useState(false);
+  const [r, setR] = useState<Extraction | null>(null);
+  const [err, setErr] = useState('');
+  const run = async () => { setBusy(true); setErr(''); setR(null); try { setR(await data.extract(noticeId)); } catch (e) { setErr(String((e as Error).message)); } finally { setBusy(false); } };
+  return (
+    <div className="px-4 pb-3">
+      {busy ? <Reasoning kind="extract" steps={EXTRACT_STEPS} /> : r && (
+        <div className="rounded-lg border border-quill/20 bg-quill-soft/50 p-3 text-[12.5px] space-y-1 rise">
+          <div className="flex items-center gap-2 flex-wrap"><strong>Fresh extraction</strong>{r.provenance.source === 'mock' ? <SampleAiBadge /> : <span className="text-muted">live · {((r.provenance.latencyMs ?? 0) / 1000).toFixed(1)} s</span>}</div>
+          <p>{r.pages} page{r.pages === 1 ? '' : 's'}, {r.chars.toLocaleString()} characters parsed · {r.regulator} · effective {r.effective}</p>
+          <p>{r.obligations.length} requirements found{r.obligations.length === stored ? ', the same count the pipeline stored' : ` (the pipeline stored ${stored})`}: {r.obligations.map((o) => `§${o.ref}`).join(', ')}</p>
+        </div>
+      )}
+      {err && <p role="alert" className="text-[12.5px] text-redline">{err}</p>}
+      <button className="btn mt-2" onClick={run} disabled={busy}><RefreshCw className={`w-3.5 h-3.5 ${busy ? 'animate-spin' : ''}`} aria-hidden />Extract again</button>
+    </div>
+  );
+}
+
+/** Re-embeds one obligation, re-ranks policies and controls, and asks AI_COMPLETE for a fresh verdict. Read-only. */
+function RemapOne({ obligationId }: { obligationId: string }) {
+  const [busy, setBusy] = useState(false);
+  const [r, setR] = useState<Remap | null>(null);
+  const [err, setErr] = useState('');
+  const run = async () => { setBusy(true); setErr(''); setR(null); try { setR(await data.remap(obligationId)); } catch (e) { setErr(String((e as Error).message)); } finally { setBusy(false); } };
+  return (
+    <div className="mt-2">
+      {busy ? <Reasoning kind="remap" steps={REMAP_STEPS} /> : r && (
+        <div className="rounded-lg border border-quill/20 bg-quill-soft/50 p-3 text-[12px] space-y-1 rise">
+          <div className="flex items-center gap-2 flex-wrap"><strong>Fresh mapping</strong><VerdictPill verdict={r.verdict as never} />{r.provenance.source === 'mock' ? <SampleAiBadge /> : <span className="text-muted">live · {((r.provenance.latencyMs ?? 0) / 1000).toFixed(1)} s</span>}</div>
+          {[...r.policies.map((p) => [p.id, p.title, p.score] as const), ...r.controls.map((c) => [c.id, c.desc, c.score] as const)].map(([id, t, sc]) => (
+            <div key={id} className="flex items-center gap-2 min-w-0"><span className="id text-ink shrink-0">{id}</span><span className="truncate min-w-0 flex-1">{t}</span><span className="ml-auto shrink-0"><Score value={sc} /></span></div>
+          ))}
+          {r.reason && <p className="text-ink-2"><strong className="text-ink">Verdict:</strong> {r.reason}</p>}
+        </div>
+      )}
+      {err && <p role="alert" className="text-[12px] text-redline">{err}</p>}
+      {!busy && <button className="text-[12px] font-semibold text-quill underline mt-1" onClick={run}>Re-map this obligation</button>}
+    </div>
+  );
+}
 
 export function NoticePane({ file, onChanged, full = false }: { file: NoticeDetail; onChanged: () => void; full?: boolean }) {
   const n = file.notice;
@@ -108,8 +155,9 @@ export function NoticePane({ file, onChanged, full = false }: { file: NoticeDeta
       <section className="panel">
         <div className="flex items-center gap-2 px-4 pt-3.5 pb-2 flex-wrap">
           <span className="eyebrow">Obligations extracted · {file.obligations.length}</span>
-          <span className="ml-auto flex gap-1.5 flex-wrap"><PoweredBy>AI_EXTRACT</PoweredBy><PoweredBy>AI_SIMILARITY</PoweredBy></span>
+          <span className="ml-auto flex gap-1.5 flex-wrap"><PoweredBy>AI_PARSE_DOCUMENT</PoweredBy><PoweredBy>AI_EXTRACT</PoweredBy><PoweredBy>VECTOR_COSINE_SIMILARITY</PoweredBy></span>
         </div>
+        <ExtractAgain noticeId={n.noticeId} stored={file.obligations.length} />
         {file.obligations.length === 0 ? <p className="px-4 pb-4 text-[13px] text-muted">No obligations: the notice was not mapped.</p> : (
           <ul className="divide-y divide-rule/70">
             {file.obligations.map((o) => (
@@ -124,6 +172,7 @@ export function NoticePane({ file, onChanged, full = false }: { file: NoticeDeta
                 )}
                 {o.verdict !== 'Meets' && o.reason && <p className="text-[12.5px] mt-2 text-ink-2"><strong className="text-ink">Verdict:</strong> {o.reason}</p>}
                 {o.conflict && <p className="text-[12.5px] mt-1 text-caution"><strong>Conflict:</strong> {o.conflictReason}</p>}
+                {o.policyId && <RemapOne obligationId={o.obligationId} />}
               </li>
             ))}
           </ul>

@@ -94,3 +94,10 @@ export type Answer = { answer: string; citations: Citation[]; provenance: Proven
 
 export type DecisionInput = { noticeId: string; decision: Decision['decision']; reason: string };
 export type GapInput = { gapId: string; status: string; ownerName: string; evidenceUrl: string; note: string };
+
+/** A fresh Document AI pass over one notice's PDF (AI_PARSE_DOCUMENT OCR + AI_EXTRACT). */
+export type Extraction = { noticeId: string; pages: number; chars: number; regulator: string; title: string; effective: string;
+  obligations: { ref: string; text: string }[]; provenance: Provenance };
+/** A fresh mapping of one obligation: AI_EMBED, VECTOR_COSINE_SIMILARITY ranking, AI_COMPLETE coverage verdict. */
+export type Remap = { obligationId: string; policies: { id: string; title: string; score: number }[]; controls: { id: string; desc: string; score: number }[];
+  verdict: string; controlCovers: boolean | null; reason: string; provenance: Provenance };

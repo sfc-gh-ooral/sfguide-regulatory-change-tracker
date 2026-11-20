@@ -31,7 +31,7 @@ export function ApplicabilityPill({ ai, decision }: { ai: boolean | null; decisi
 export function Score({ value, low = 0.55 }: { value: number; low?: number }) {
   const weak = value < low;
   return (
-    <span className="inline-flex items-center gap-2 min-w-[92px]" title={weak ? `Below the ${low} review line` : 'AI_SIMILARITY score'}>
+    <span className="inline-flex items-center gap-2 min-w-[92px]" title={weak ? `Below the ${low} review line` : 'Cosine similarity (VECTOR_COSINE_SIMILARITY)'}>
       <span className="relative h-1.5 w-14 rounded-full bg-sheet-2 overflow-hidden" aria-hidden>
         <span className={`absolute inset-y-0 left-0 rounded-full ${weak ? 'bg-redline' : 'bg-ink'}`} style={{ width: `${Math.max(4, value * 100)}%` }} />
         <span className="absolute inset-y-0 w-px bg-caution" style={{ left: `${low * 100}%` }} />

@@ -6,7 +6,7 @@ import { Check, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SAMPLE_DELAY_MS } from '@/lib/sample-timing';
 
-export type ReasoningKind = 'assess' | 'ask';
+export type ReasoningKind = 'assess' | 'ask' | 'extract' | 'remap';
 
 export function Reasoning({ kind, steps }: { kind: ReasoningKind; steps: string[] }) {
   const [step, setStep] = useState(0);
