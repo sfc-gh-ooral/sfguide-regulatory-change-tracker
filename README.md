@@ -8,15 +8,19 @@ A fictional retail bank, Brivanta Bank, receives notices from fictional regulato
 
 > **Synthetic data, illustrative logic.** The bank, the regulators, the rules, the policies and every person are fictional and were written for this example. Nothing is copied from real regulatory text. This is not legal, regulatory, or compliance advice, and not a production system.
 
+![Change inbox: KPI tiles, effective-date runway chart and the three-pane notice docket](docs/images/01-change-inbox.png)
+
+The app is dressed as **Obliqa Change Desk**, a fictional product (design notes in [docs/DESIGN.md](docs/DESIGN.md)): warm paper, black ink and one redline red for what changed, with a top bar showing the Sample/Live environment.
+
 ## What's in the app
 
 | Screen | What it shows | Snowflake capability |
 | --- | --- | --- |
-| Change inbox | New notices with an AI applicability badge, summary, obligation and gap counts | Stage, stream and task; AI_PARSE_DOCUMENT; AI_COMPLETE |
+| Change inbox | KPI tiles, an effective-date runway chart, and a three-pane docket (filters, notices, reading pane) with the AI assessment, decision and obligations | Stage, stream and task; AI_PARSE_DOCUMENT; AI_COMPLETE |
 | Notice detail | AI assessment (re-run on demand), analyst decision with reason, obligations with their mapping, source PDF and parsed text | AI_COMPLETE structured output; AI_EXTRACT; AI_EMBED |
 | Obligation map | Every obligation with its two closest policies and closest control, similarity scores, coverage verdict; gaps highlighted | AI_EMBED + VECTOR_COSINE_SIMILARITY; AI_COMPLETE |
-| Gap tracker | Gaps with owner, due date, status, evidence link and history; owners update them | Tables with app write-back |
-| Ask the rulebook | Q&A with a citation after each claim | Cortex Agents; Cortex Search |
+| Gap tracker | Board and table views of gaps with owner, due date, status, evidence and history; owners update them; CSV export | Tables with app write-back |
+| Ask the rulebook | Q&A with staged progress, a streamed answer, citation chips and source index cards | Cortex Agents; Cortex Search |
 
 Planted stories (see [data/README.md](data/README.md)): a complaint deadline the procedure no longer meets, two obligations with no control, two policies that conflict, and a notice that does not apply to the bank.
 
@@ -72,10 +76,10 @@ Least-privilege path: setup uses ACCOUNTADMIN only for the account-level block (
 
 ### Expected cost and time
 
-- **Setup:** 97 to 106 seconds per run in our tests (24 notices).
+- **Setup:** 97 to 109 seconds per run in our tests (24 notices; latest run November 20, 2026: 109 seconds).
 - **Warehouse:** 0.41 credits in total for three full setup runs plus app testing, measured with `WAREHOUSE_METERING_HISTORY`.
 - **Cortex AI:** each setup run makes 24 AI_PARSE_DOCUMENT and 24 AI_EXTRACT calls, about 190 AI_EMBED calls on short texts, and about 70 AI_COMPLETE calls. Check your own usage in `SNOWFLAKE.ACCOUNT_USAGE.CORTEX_AISQL_USAGE_HISTORY` (it lags by a few hours). The Cortex Search service also bills for serving while it exists, so run cleanup when done.
-- **App (live, measured):** screens load in 0.1 to 3 seconds; re-assessing a notice with AI_COMPLETE took a median 3.4 seconds; agent answers took a median 12.5 seconds (up to 16 seconds).
+- **App (live, measured):** screens load in 0.1 to 3 seconds; re-assessing a notice with AI_COMPLETE took a median 3.4 seconds; agent answers took a median 12.5 seconds (up to 17 seconds; 16.8 seconds in the November 20 run).
 - **Task:** the held-back notice was processed in a 23-second task run, about 6 minutes after the file landed.
 
 ## Known limitations
@@ -92,7 +96,7 @@ Least-privilege path: setup uses ACCOUNTADMIN only for the account-level block (
 
 - "Load my policy library from `<stage or table>` and map it to these obligations. Show low-confidence matches (similarity under 0.55) for review before opening any gaps."
 - "Add a regulator feed I download weekly into a stage, and have the task process only new files. Show me how to test it with one file first."
-- "Export the gap tracker for my GRC tool as a CSV with owner, due date, status and evidence link, and explain the column mapping."
+- "Export the gap tracker for my GRC tool: map the CSV export's columns to its import format."
 
 ## Repository layout
 
@@ -102,10 +106,10 @@ sql/setup.sql             Snowflake objects, pipeline, task, Cortex Search, agen
 sql/cleanup.sql           Drops everything setup created
 data/                     Synthetic notices (PDF), policies, controls; data/README.md lists the stories
 scripts/                  Data generator, sample capture, hosted build, screenshots
-docs/                     GitHub Pages guide; docs/try/ is the hosted no-account example
+docs/                     GitHub Pages guide (docs/DESIGN.md: design notes; docs/fonts: OFL fonts); docs/try/ is the hosted no-account example
 ```
 
-To rebuild: `npm run generate-data` (Python 3 with reportlab), `npm run capture-sample` with Live mode running, `npm run build:example`, then `npm run capture`.
+To rebuild: `npm run generate-data` (Python 3 with reportlab), `npm run capture-sample` with Live mode running, `npm run build:example`, then `npm run capture`. `node scripts/check-contrast.mjs` checks the design tokens against WCAG AA.
 
 ## License and disclaimer
 
