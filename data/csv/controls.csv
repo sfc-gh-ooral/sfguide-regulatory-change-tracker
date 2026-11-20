@@ -1,0 +1,59 @@
+control_id,policy_id,description,frequency,owner_name,owner_team
+CTL-101,POL-CMP-01,"Daily report of complaints not acknowledged within 2 business days, reviewed by the complaints manager",Daily,Samuel Moreau,Customer Care
+CTL-102,POL-CMP-01,"Weekly report of complaints open for more than 30 calendar days without a final response, escalated to the head of Customer Care",Weekly,Omar Okafor,Customer Care
+CTL-103,POL-CMP-02,"Quarterly complaint root cause pack presented to the Executive Risk Committee, with owners for each fix",Quarterly,Samuel Moreau,Customer Care
+CTL-104,POL-CMP-01,Monthly sample of 25 closed complaint files checked for complete correspondence,Monthly,Hannah Haddad,Customer Care
+CTL-111,POL-REC-01,Automated deletion job removes customer communications older than 5 years from the correspondence archive,Monthly,Hannah Mensah,Records Management
+CTL-112,POL-REC-02,Regulatory request log reviewed weekly for requests approaching their response deadline,Weekly,Tomas Sato,Regulatory Affairs
+CTL-121,POL-FEE-01,App release test confirms the overdraft fee prompt and cancel option appear before a fee-bearing transaction,Per release,Nadia Ivanova,Retail Products
+CTL-122,POL-FEE-01,Monthly reconciliation that every account charged a fee received a fee summary with a year-to-date total,Monthly,Hannah Haddad,Retail Products
+CTL-123,POL-FEE-02,Pricing change checklist confirms customer notices were sent at least 60 days before a fee increase,Per change,Tomas Brennan,Retail Products
+CTL-131,POL-PRV-01,"Weekly report of data access requests open for more than 20 days, with escalation before the 30-day limit",Weekly,Marco Ivanova,Privacy Office
+CTL-132,POL-PRV-02,Breach log review confirms supervisor notification within 72 hours for each reportable breach,Per incident,Rosa Ramos,Privacy Office
+CTL-133,POL-PRV-03,Monthly check that marketing send lists exclude customers who withdrew consent,Monthly,Daniel Sato,Marketing
+CTL-134,POL-PRV-03,"Quarterly sample of opt-in records checked for date, channel and wording",Quarterly,Felix Brennan,Marketing
+CTL-141,POL-RES-01,"Annual Board approval of important business services and impact tolerances, recorded in Board minutes",Annual,Maya Fischer,Operational Risk
+CTL-142,POL-RES-01,"Annual severe-but-plausible scenario test for each important business service, with results tracked",Annual,Maya Fischer,Operational Risk
+CTL-143,POL-RES-03,Outage communication timestamps compared with outage start time after every payment outage,Per incident,Rosa Ramos,Payments Operations
+CTL-144,POL-RES-02,Annual review of business continuity plans by each business unit,Annual,Tomas Sato,Operational Risk
+CTL-151,POL-TPR-01,Supplier register completeness check for suppliers supporting important business services,Quarterly,Arjun Ramos,Procurement
+CTL-152,POL-TPR-01,Annual performance and risk review of each critical supplier,Annual,Tomas Brennan,Procurement
+CTL-153,POL-TPR-01,"Exit plan test for each critical supplier, every two years",Biennial,Arjun Ramos,Procurement
+CTL-154,POL-TPR-02,Security assessment sign-off before onboarding any cloud service holding customer data,Per supplier,Hannah Haddad,Technology Risk
+CTL-161,POL-AML-01,Account opening system blocks business accounts until owners of 25 percent or more are verified,Continuous,Felix Brennan,Financial Crime Compliance
+CTL-162,POL-AML-01,Monthly report of high-risk business customers whose beneficial ownership refresh is overdue,Monthly,Omar Okafor,Financial Crime Compliance
+CTL-163,POL-AML-02,Weekly report of investigations approaching the 30-day filing deadline,Weekly,Omar Okafor,Financial Crime Compliance
+CTL-164,POL-AML-02,Quarterly suspicious activity reporting metrics presented to the Board Risk Committee,Quarterly,Grace Kowalski,Financial Crime Compliance
+CTL-165,POL-AML-03,"Rescreening job runs automatically within 24 hours of each sanctions list update, with completion logged",Per update,Grace Kowalski,Financial Crime Compliance
+CTL-171,POL-FRD-01,Real-time fraud engine scores every outgoing instant payment before release; bypasses are logged and reviewed,Continuous,Leila Brennan,Fraud Management
+CTL-172,POL-FRD-01,Daily test call to the 24/7 fraud reporting line,Daily,Tomas Brennan,Fraud Management
+CTL-173,POL-FRD-02,Weekly report of scam claims open for more than 5 business days,Weekly,Arjun Delgado,Fraud Management
+CTL-174,POL-FRD-02,Confirmation-of-payee check and name-mismatch warning tested in each app release,Per release,Arjun Delgado,Fraud Management
+CTL-181,POL-VUL-01,Quarterly review of vulnerability flags recorded with consent,Quarterly,Samuel Moreau,Customer Care
+CTL-182,POL-VUL-01,Annual vulnerability training completion report for customer-facing colleagues,Annual,Samuel Moreau,Customer Care
+CTL-183,POL-ACC-01,Monthly report of accessible-format requests and their fulfilment times,Monthly,Samuel Moreau,Customer Care
+CTL-191,POL-CRD-01,"Statement template review confirms the minimum-payment warning, time to repay and total interest",Per change,Tomas Sato,Card Products
+CTL-192,POL-CRD-02,Dialer rule limits calls about one debt to 7 in 7 days; exceptions reviewed weekly,Continuous,Samuel Park,Collections
+CTL-193,POL-CRD-02,Monthly check that written-contact-only requests are flagged in the dialer,Monthly,Hannah Haddad,Collections
+CTL-201,POL-MTG-01,Daily arrears report confirms contact attempts within 10 days of a missed payment,Daily,Tomas Brennan,Mortgage Servicing
+CTL-202,POL-MTG-01,Repossession checklist requires evidence that forbearance options were offered,Per case,Daniel Sato,Mortgage Servicing
+CTL-203,POL-MTG-02,Monthly sample of mortgage approvals checked for income verification and stressed affordability,Monthly,Samuel Ramos,Mortgage Lending
+CTL-211,POL-LIQ-01,"Monthly liquidity stress test results, including the digital outflow scenario, reviewed by ALCO",Monthly,Tomas Brennan,Treasury
+CTL-212,POL-LIQ-01,Daily check that liquid assets cover 30 days of net outflows in the most severe scenario,Daily,Ingrid Adeyemi,Treasury
+CTL-213,POL-CAP-01,Quarterly capital forecast reviewed by the Board Risk Committee,Quarterly,Ingrid Adeyemi,Treasury
+CTL-221,POL-CYB-01,Incident log review confirms supervisor notification within 24 hours of a significant classification,Per incident,Leila Brennan,Information Security
+CTL-222,POL-CYB-01,Final incident reports tracked to submission within 30 days of resolution,Per incident,Tomas Brennan,Information Security
+CTL-223,POL-CYB-02,Quarterly user access review for critical systems,Quarterly,Hannah Haddad,Information Security
+CTL-224,POL-CYB-02,Weekly report of critical vulnerabilities older than 14 days,Weekly,Leila Okafor,Information Security
+CTL-231,POL-MRM-01,Independent validation sign-off before an internally built credit scorecard goes live,Per model,Ingrid Byrne,Model Risk
+CTL-232,POL-MRM-01,Monthly performance monitoring report for internally built credit scorecards,Monthly,Omar Okafor,Model Risk
+CTL-241,POL-FLN-01,Quarterly fair lending disparity testing of approval and pricing outcomes,Quarterly,Marco Adeyemi,Compliance
+CTL-242,POL-FLN-01,Adverse action notices checked for principal decline reasons,Monthly,Marco Adeyemi,Compliance
+CTL-251,POL-MKT-01,Compliance approval recorded for every financial promotion before release,Per promotion,Elliot Ivanova,Marketing
+CTL-261,POL-PRD-01,Annual product review pack approved by the Product Committee,Annual,Nadia Ivanova,Retail Products
+CTL-271,POL-TRN-01,Monthly mandatory training completion report,Monthly,Daniel Sato,Human Resources
+CTL-281,POL-GOV-01,Regulatory change log reviewed weekly for items without an applicability decision,Weekly,Tomas Brennan,Regulatory Affairs
+CTL-282,POL-GOV-01,Monthly review of open regulatory gaps against effective dates,Monthly,Lena Kowalski,Regulatory Affairs
+CTL-291,POL-CON-01,Annual outside-interest declarations completed by all colleagues,Annual,Marco Adeyemi,Compliance
+CTL-301,POL-WBL-01,Quarterly whistleblowing report to the Audit Committee,Quarterly,Felix Brennan,Compliance
+CTL-311,POL-DEP-01,Monthly dormant account identification run,Monthly,Nadia Ivanova,Retail Products

@@ -1,0 +1,6 @@
+gap_id,notice_id,gap_type,description,owner_team,due_date,status,evidence_url
+GAP-0101,RCN-2026-090,Prior review,Statement wording does not explain the new interest rate cap.,Card Products · Hannah Delgado,2026-10-31,Closed,https://grc.example.com/evidence/EV-2026-0412
+GAP-0102,RCN-2026-091,Prior review,No control evidences that dormant-account letters are sent before reclassification.,Retail Products · Nadia Ivanova,2026-12-15,In progress,https://grc.example.com/evidence/EV-2026-0433
+GAP-0103,RCN-2026-092,Prior review,Training module on scam warning signs not yet assigned to branch colleagues.,Human Resources · Leila Lindqvist,2026-11-30,Ready for review,https://grc.example.com/evidence/EV-2026-0451
+GAP-0104,RCN-2026-093,Prior review,Supplier register missing criticality rating for two payment processors.,Procurement · Arjun Ramos,2026-11-20,In progress,
+GAP-0105,RCN-2026-094,Prior review,Promotions approval log lacks reviewer name for social media posts.,Marketing · Elliot Ivanova,2026-09-30,Closed,https://grc.example.com/evidence/EV-2026-0398
