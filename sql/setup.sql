@@ -98,8 +98,12 @@ COPY INTO PRIOR_GAPS   FROM @RCT_SEED/prior_gaps.csv   FILE_FORMAT = (FORMAT_NAM
 COPY INTO NOTICE_FILES FROM @RCT_SEED/notice_files.csv FILE_FORMAT = (FORMAT_NAME = RCT_CSV) MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;
 
 -- 2b. Embeddings of the policy library and controls, for mapping obligations -----
+-- One vector per policy sentence, so a short obligation can match the one sentence that covers it.
 CREATE OR REPLACE TABLE POLICY_VECTORS AS
-SELECT policy_id, AI_EMBED('snowflake-arctic-embed-l-v2.0', title || '. ' || policy_text) AS v FROM POLICIES;
+SELECT p.policy_id, s.index AS sentence_no, TRIM(s.value::STRING) AS sentence,
+       AI_EMBED('snowflake-arctic-embed-l-v2.0', p.title || ': ' || TRIM(s.value::STRING)) AS v
+FROM POLICIES p, LATERAL FLATTEN(input => SPLIT(p.policy_text, '. ')) s
+WHERE LENGTH(TRIM(s.value::STRING)) > 0;
 CREATE OR REPLACE TABLE CONTROL_VECTORS AS
 SELECT control_id, AI_EMBED('snowflake-arctic-embed-l-v2.0', description) AS v FROM CONTROLS;
 
@@ -121,7 +125,7 @@ CREATE OR REPLACE TABLE OBLIGATIONS (obligation_id STRING, notice_id STRING, ref
 CREATE OR REPLACE TABLE OBLIGATION_MAP (
   obligation_id STRING, notice_id STRING,
   policy_id STRING, policy_score FLOAT, policy2_id STRING, policy2_score FLOAT,
-  control_id STRING, control_score FLOAT,
+  control_id STRING, control_score FLOAT, control2_id STRING, control2_score FLOAT,
   verdict STRING, control_covers BOOLEAN, verdict_reason STRING,
   conflict BOOLEAN, conflict_reason STRING, mapped_at TIMESTAMP_NTZ);
 CREATE OR REPLACE TABLE GAPS (
@@ -190,7 +194,7 @@ BEGIN
          parsed:content::STRING, parsed:metadata:pageCount::NUMBER,
          x:regulator::STRING, x:notice_type::STRING, x:title::STRING,
          TRY_TO_DATE(x:published_date::STRING), TRY_TO_DATE(x:effective_date::STRING), x, SYSDATE(),
-         IFF(CURRENT_TASK_NAME() IS NULL, 'Setup', 'PROCESS_NOTICES_TASK')
+         IFF(SYSTEM$CURRENT_USER_TASK_NAME() IS NULL, 'Setup', 'PROCESS_NOTICES_TASK')
   FROM a;
   UPDATE NOTICE_QUEUE SET processed = TRUE WHERE relative_path IN (SELECT file_name FROM NOTICES);
 
@@ -219,25 +223,30 @@ BEGIN
   WHERE nt.notice_id = s.notice_id;
 
   -- 5. Map each new obligation to its closest two policies and closest control (cosine similarity).
-  INSERT INTO OBLIGATION_MAP (obligation_id, notice_id, policy_id, policy_score, policy2_id, policy2_score, control_id, control_score, mapped_at)
+  INSERT INTO OBLIGATION_MAP (obligation_id, notice_id, policy_id, policy_score, policy2_id, policy2_score,
+                              control_id, control_score, control2_id, control2_score, mapped_at)
   WITH p AS (
-    SELECT o.obligation_id, o.notice_id, pv.policy_id, VECTOR_COSINE_SIMILARITY(o.v, pv.v) AS s,
-           ROW_NUMBER() OVER (PARTITION BY o.obligation_id ORDER BY s DESC) AS rk
+    SELECT o.obligation_id, o.notice_id, pv.policy_id, MAX(VECTOR_COSINE_SIMILARITY(o.v, pv.v)) AS s
     FROM OBLIGATIONS o, POLICY_VECTORS pv
     WHERE o.obligation_id NOT IN (SELECT obligation_id FROM OBLIGATION_MAP)
-    QUALIFY rk <= 2
-  ), c AS (
-    SELECT o.obligation_id, cv.control_id, VECTOR_COSINE_SIMILARITY(o.v, cv.v) AS s
+    GROUP BY o.obligation_id, o.notice_id, pv.policy_id
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY o.obligation_id ORDER BY s DESC) <= 2
+  ), pr AS (SELECT p.*, ROW_NUMBER() OVER (PARTITION BY obligation_id ORDER BY s DESC) AS rk FROM p),
+  c AS (
+    SELECT o.obligation_id, cv.control_id, VECTOR_COSINE_SIMILARITY(o.v, cv.v) AS s,
+           ROW_NUMBER() OVER (PARTITION BY o.obligation_id ORDER BY s DESC) AS rk
     FROM OBLIGATIONS o, CONTROL_VECTORS cv
     WHERE o.obligation_id NOT IN (SELECT obligation_id FROM OBLIGATION_MAP)
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY o.obligation_id ORDER BY s DESC) = 1
+    QUALIFY rk <= 2
   )
-  SELECT p1.obligation_id, p1.notice_id, p1.policy_id, ROUND(p1.s, 3), p2.policy_id, ROUND(p2.s, 3), c.control_id, ROUND(c.s, 3), SYSDATE()
-  FROM p p1 JOIN p p2 ON p2.obligation_id = p1.obligation_id AND p2.rk = 2
-  JOIN c ON c.obligation_id = p1.obligation_id
+  SELECT p1.obligation_id, p1.notice_id, p1.policy_id, ROUND(p1.s, 3), p2.policy_id, ROUND(p2.s, 3),
+         c1.control_id, ROUND(c1.s, 3), c2.control_id, ROUND(c2.s, 3), SYSDATE()
+  FROM pr p1 JOIN pr p2 ON p2.obligation_id = p1.obligation_id AND p2.rk = 2
+  JOIN c c1 ON c1.obligation_id = p1.obligation_id AND c1.rk = 1
+  JOIN c c2 ON c2.obligation_id = p1.obligation_id AND c2.rk = 2
   WHERE p1.rk = 1;
 
-  -- 6. Coverage verdict with AI_COMPLETE: does the matched policy and control meet the obligation?
+  -- 6. Coverage verdict with AI_COMPLETE: do the two closest policies and controls meet the obligation?
   --    Obligations of notices the AI found not applicable are not assessed.
   UPDATE OBLIGATION_MAP m SET verdict = v.r:verdict::STRING, control_covers = v.r:control_covers::BOOLEAN, verdict_reason = v.r:reason::STRING
   FROM (
@@ -247,14 +256,19 @@ BEGIN
         || 'thresholds and scope exactly; a longer deadline, lower frequency or narrower scope than the obligation does not meet it. '
         || 'verdict is one of "Meets", "Partially meets", "Does not meet". control_covers is true only if the control would '
         || 'detect or prevent a breach of this specific obligation. reason is one sentence quoting the decisive wording. '
-        || 'Obligation: ' || o.obligation_text || ' Policy ' || p.policy_id || ' (' || p.title || '): ' || p.policy_text
-        || ' Control ' || c.control_id || ': ' || c.description,
+        || 'Judge the policies and controls together: the obligation is met if either policy meets it. '
+        || 'Obligation: ' || o.obligation_text
+        || ' Policy ' || p.policy_id || ' (' || p.title || '): ' || p.policy_text
+        || ' Policy ' || p2.policy_id || ' (' || p2.title || '): ' || p2.policy_text
+        || ' Control ' || c.control_id || ': ' || c.description || ' Control ' || c2.control_id || ': ' || c2.description,
       response_format => TYPE OBJECT(verdict STRING, control_covers BOOLEAN, reason STRING)))) AS r
     FROM OBLIGATION_MAP m
     JOIN OBLIGATIONS o ON o.obligation_id = m.obligation_id
     JOIN NOTICES nt ON nt.notice_id = m.notice_id
     JOIN POLICIES p ON p.policy_id = m.policy_id
+    JOIN POLICIES p2 ON p2.policy_id = m.policy2_id
     JOIN CONTROLS c ON c.control_id = m.control_id
+    JOIN CONTROLS c2 ON c2.control_id = m.control2_id
     WHERE m.verdict IS NULL AND nt.ai_applicable
   ) v
   WHERE m.obligation_id = v.obligation_id;
@@ -281,25 +295,23 @@ BEGIN
   WHERE m.obligation_id = k.obligation_id;
   UPDATE OBLIGATION_MAP SET conflict = FALSE WHERE conflict IS NULL AND verdict IS NOT NULL;
 
-  -- 8. Open a gap for each obligation that is not met, has no control, or sits on conflicting policies.
+  -- 8. Open one gap per obligation that sits on conflicting policies, has no control, or is not met.
   --    Owner: the team that owns the closest policy. Due: 30 days before the effective date.
   INSERT INTO GAPS
   WITH g AS (
-    SELECT m.obligation_id, m.notice_id, 'Requirement not met' AS gap_type, m.verdict_reason AS description, m.policy_id
-    FROM OBLIGATION_MAP m WHERE m.verdict = 'Does not meet'
-    UNION ALL
-    SELECT m.obligation_id, m.notice_id, 'No control', m.verdict_reason, m.policy_id
-    FROM OBLIGATION_MAP m WHERE m.verdict IN ('Partially meets', 'Does not meet') AND NOT m.control_covers AND m.control_score < 0.55
-    UNION ALL
-    SELECT m.obligation_id, m.notice_id, 'Policy conflict', m.conflict_reason, m.policy_id
-    FROM OBLIGATION_MAP m WHERE m.conflict
+    SELECT m.obligation_id, m.notice_id, m.policy_id,
+           CASE WHEN m.conflict THEN 'Policy conflict'
+                WHEN m.verdict IN ('Partially meets', 'Does not meet') AND NOT m.control_covers AND m.control_score < 0.55 THEN 'No control'
+                WHEN m.verdict = 'Does not meet' THEN 'Requirement not met' END AS gap_type,
+           IFF(m.conflict, m.conflict_reason, m.verdict_reason) AS description
+    FROM OBLIGATION_MAP m
   )
-  SELECT 'GAP-' || LPAD((SELECT COUNT(*) FROM GAPS WHERE source = 'AI mapping') + ROW_NUMBER() OVER (ORDER BY g.obligation_id, g.gap_type) + 200, 4, '0'),
+  SELECT 'GAP-' || LPAD((SELECT COUNT(*) FROM GAPS WHERE source = 'AI mapping') + ROW_NUMBER() OVER (ORDER BY g.obligation_id) + 200, 4, '0'),
          g.obligation_id, g.notice_id, g.gap_type, g.description, p.owner_team, p.owner_name,
          GREATEST(DATEADD('day', -30, nt.effective_date), DATEADD('day', 14, (SELECT value FROM CONFIG WHERE key = 'as_of_date')::DATE)),
          'Open', NULL, 'AI mapping', SYSDATE(), NULL, NULL
   FROM g JOIN POLICIES p ON p.policy_id = g.policy_id JOIN NOTICES nt ON nt.notice_id = g.notice_id
-  WHERE NOT EXISTS (SELECT 1 FROM GAPS x WHERE x.obligation_id = g.obligation_id AND x.gap_type = g.gap_type);
+  WHERE g.gap_type IS NOT NULL AND NOT EXISTS (SELECT 1 FROM GAPS x WHERE x.obligation_id = g.obligation_id);
 
   RETURN n || ' notices processed';
 END;
@@ -366,12 +378,12 @@ tool_resources:
     id_column: source_id
 $$;
 
--- 2f. Check the result -----------------------------------------------------------
-SELECT COUNT(*) AS notices, COUNT_IF(ai_applicable) AS applicable, COUNT_IF(NOT ai_applicable) AS not_applicable FROM NOTICES;
-SELECT verdict, COUNT(*) AS obligations FROM OBLIGATION_MAP GROUP BY verdict ORDER BY obligations DESC;
-SELECT gap_id, notice_id, obligation_id, gap_type, owner_team, due_date FROM GAPS WHERE source = 'AI mapping' ORDER BY gap_id;
-
 -- To watch the task process a new notice, copy the held-back file onto the stage. The task runs
 -- within 5 minutes and the notice appears at the top of the Change inbox:
 --   COPY FILES INTO @REG_CHANGE_DEMO.RCT.NOTICE_DOCS FROM @REG_CHANGE_DEMO.RCT.RCT_REPO/branches/main/data/incoming/;
 --   ALTER STAGE REG_CHANGE_DEMO.RCT.NOTICE_DOCS REFRESH;
+
+-- 2f. Check the result -----------------------------------------------------------
+SELECT COUNT(*) AS notices, COUNT_IF(ai_applicable) AS applicable, COUNT_IF(NOT ai_applicable) AS not_applicable FROM NOTICES;
+SELECT verdict, COUNT(*) AS obligations FROM OBLIGATION_MAP GROUP BY verdict ORDER BY obligations DESC;
+SELECT gap_id, notice_id, obligation_id, gap_type, owner_team, due_date FROM GAPS WHERE source = 'AI mapping' ORDER BY gap_id;
