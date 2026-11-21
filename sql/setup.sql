@@ -15,13 +15,52 @@
 --   warehouse    REG_CHANGE_WH (XSMALL, AUTO_SUSPEND = 60)
 --   database     REG_CHANGE_DEMO (schemas RCT, APP)
 --   integration  REG_CHANGE_GIT_API (read-only access to the public example repository)
--- It changes nothing that already exists.
+-- It changes nothing that already exists: an owner check at the start stops the script if
+-- any of these names is already taken by an object with a different owner.
 -- =============================================================================
 
 -- -----------------------------------------------------------------------------
 -- Part 1. Account-level objects (ACCOUNTADMIN)
 -- -----------------------------------------------------------------------------
 USE ROLE ACCOUNTADMIN;
+
+-- Owner check. Re-running this script is safe: everything below uses IF NOT EXISTS or
+-- CREATE OR REPLACE inside the example's own database. But if an object with one of these
+-- names already exists under a different owner, it isn't ours, so stop rather than take
+-- it over. Expected owners: the role, the integration -> ACCOUNTADMIN; the warehouse and
+-- database -> REG_CHANGE_DEMO_ROLE.
+EXECUTE IMMEDIATE $$
+DECLARE
+  o STRING;
+  role_taken EXCEPTION (-20101, 'Setup stopped: role REG_CHANGE_DEMO_ROLE already exists and is not owned by ACCOUNTADMIN. It is not from this example; rename the example objects or remove that role first.');
+  wh_taken EXCEPTION (-20102, 'Setup stopped: warehouse REG_CHANGE_WH already exists and is owned by a role other than REG_CHANGE_DEMO_ROLE. It is not from this example; rename the example objects or remove that warehouse first.');
+  db_taken EXCEPTION (-20103, 'Setup stopped: database REG_CHANGE_DEMO already exists and is owned by a role other than REG_CHANGE_DEMO_ROLE. It is not from this example; rename the example objects or remove that database first.');
+  int_taken EXCEPTION (-20104, 'Setup stopped: integration REG_CHANGE_GIT_API already exists and is not owned by ACCOUNTADMIN. It is not from this example; rename the example objects or remove that integration first.');
+BEGIN
+  SHOW ROLES LIKE 'REG_CHANGE_DEMO_ROLE';
+  SELECT MAX("owner") INTO :o FROM TABLE(RESULT_SCAN(LAST_QUERY_ID())) WHERE "name" = 'REG_CHANGE_DEMO_ROLE';
+  IF (o IS NOT NULL AND o <> 'ACCOUNTADMIN') THEN RAISE role_taken; END IF;
+
+  SHOW WAREHOUSES LIKE 'REG_CHANGE_WH';
+  SELECT MAX("owner") INTO :o FROM TABLE(RESULT_SCAN(LAST_QUERY_ID())) WHERE "name" = 'REG_CHANGE_WH';
+  IF (o IS NOT NULL AND o <> 'REG_CHANGE_DEMO_ROLE') THEN RAISE wh_taken; END IF;
+
+  SHOW DATABASES LIKE 'REG_CHANGE_DEMO';
+  SELECT MAX("owner") INTO :o FROM TABLE(RESULT_SCAN(LAST_QUERY_ID())) WHERE "name" = 'REG_CHANGE_DEMO';
+  IF (o IS NOT NULL AND o <> 'REG_CHANGE_DEMO_ROLE') THEN RAISE db_taken; END IF;
+
+  -- SHOW INTEGRATIONS has no owner column, so read the OWNERSHIP grant when it exists.
+  SHOW INTEGRATIONS LIKE 'REG_CHANGE_GIT_API';
+  SELECT COUNT(*)::STRING INTO :o FROM TABLE(RESULT_SCAN(LAST_QUERY_ID())) WHERE "name" = 'REG_CHANGE_GIT_API';
+  IF (o <> '0') THEN
+    SHOW GRANTS ON INTEGRATION REG_CHANGE_GIT_API;
+    SELECT MAX("grantee_name") INTO :o FROM TABLE(RESULT_SCAN(LAST_QUERY_ID())) WHERE "privilege" = 'OWNERSHIP';
+    IF (o IS NULL OR o <> 'ACCOUNTADMIN') THEN RAISE int_taken; END IF;
+  END IF;
+
+  RETURN 'Owner check passed';
+END;
+$$;
 
 CREATE ROLE IF NOT EXISTS REG_CHANGE_DEMO_ROLE COMMENT = 'Regulatory Change Tracker example: least-privilege owner role';
 GRANT ROLE REG_CHANGE_DEMO_ROLE TO ROLE SYSADMIN;

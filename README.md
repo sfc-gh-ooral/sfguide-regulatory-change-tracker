@@ -42,7 +42,7 @@ Open http://localhost:3000. The app runs on bundled data captured from the live 
 
 ## Live mode: deploy to your account
 
-1. Open a Snowsight SQL worksheet as ACCOUNTADMIN, paste [`sql/setup.sql`](sql/setup.sql) and run all. It reads the synthetic files from this public repository through a Git repository object, so there is nothing to upload.
+1. Open a Snowsight SQL worksheet as ACCOUNTADMIN, paste [`sql/setup.sql`](sql/setup.sql) and run all. It reads the synthetic files from this public repository through a Git repository object, so there is nothing to upload. It is safe to re-run; if the role, warehouse, database or integration name is already taken by an object with a different owner, it stops at the first step with an error naming that object.
 2. Create a key pair and register it on your user (commands in [`.env.example`](.env.example)).
 3. Copy `.env.example` to `.env.local` and fill in `SNOWFLAKE_ACCOUNT`, `SNOWFLAKE_USERNAME` and `SNOWFLAKE_PRIVATE_KEY_PATH`. Keep `.env.local` and the key out of the repository (both are git-ignored).
 4. Run `npm run dev` and switch the header to **Live**. The app connects as `REG_CHANGE_DEMO_ROLE` only.

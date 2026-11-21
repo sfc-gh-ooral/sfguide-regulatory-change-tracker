@@ -3,7 +3,7 @@
 // which searches the RULEBOOK_SEARCH Cortex Search service. Every statement uses bind variables.
 import { MODEL, type RctData } from './rct-data';
 import { query } from './snowflake';
-import type { Answer, Citation, Decision, Extraction, Gap, MapRow, NoticeRow, Provenance, Remap } from './types';
+import type { Answer, Citation, Decision, Gap, MapRow, NoticeRow, Provenance } from './types';
 
 type Row = Record<string, unknown>;
 const AGENT = process.env.SNOWFLAKE_AGENT_NAME ?? 'REG_CHANGE_DEMO.RCT.RULEBOOK_AGENT';
